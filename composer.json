@@ -1,0 +1,26 @@
+{
+    "name": "dotronglong/authorization",
+    "description": "Roles based Authorization Scheme",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Long Do",
+            "email": "me@dotronglong.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.9",
+        "laravel/framework": "5.1.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Auth\\": "src/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.0-dev"
+        }
+    },
+    "minimum-stability": "dev"
+}
