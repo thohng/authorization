@@ -1,4 +1,4 @@
-<?php namespace Auth\Role;
+<?php namespace Auth\Contracts\Role;
 
 interface HasRoles
 {

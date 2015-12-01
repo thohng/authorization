@@ -1,4 +1,4 @@
-<?php namespace Auth\Permission;
+<?php namespace Auth\Contracts\Permission;
 
 interface HasPermissions
 {

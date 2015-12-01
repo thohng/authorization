@@ -1,6 +1,6 @@
-<?php namespace Auth\Permission;
+<?php namespace Auth\Contracts;
 
-interface Contract
+interface Role
 {
     /**
      * @return string

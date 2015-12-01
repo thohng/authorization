@@ -1,4 +1,4 @@
-<?php namespace Auth;
+<?php namespace Auth\Contracts;
 
 interface Item
 {

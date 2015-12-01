@@ -1,6 +1,11 @@
 <?php namespace Auth\Role;
 
-abstract class Permission
-{
+use Illuminate\Database\Eloquent\Model;
 
+class Permission extends Model
+{
+    public function getTable()
+    {
+        return config('authorization.role.permissions');
+    }
 }

@@ -1,6 +1,6 @@
-<?php namespace Auth\Role;
+<?php namespace Auth\Contracts;
 
-interface Contract
+interface Permission
 {
     /**
      * @return string
@@ -11,9 +11,4 @@ interface Contract
      * @return int
      */
     public function getId();
-
-    /**
-     * @return mixed
-     */
-    public function getPermissions();
 }
