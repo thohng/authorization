@@ -2,7 +2,6 @@
 
 use TechExim\Auth\Contracts\Permission\Repository as Contract;
 use TechExim\Auth\Contracts\Item;
-use TechExim\Auth\Permission;
 use TechExim\Auth\Permission\Item as PermissionItem;
 use TechExim\Auth\Contracts\Permission as PermissionContract;
 

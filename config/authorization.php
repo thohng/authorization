@@ -8,7 +8,7 @@ return [
 	|
 	*/
     'role' => [
-        'model' => 'TechExim\Auth\Role',
+        'model' => 'TechExim\Auth\Role\Role',
         'table' => 'auth_roles',
         'permissions' => 'auth_role_permissions'
     ],
@@ -20,7 +20,7 @@ return [
 	|
 	*/
     'permission' => [
-        'model' => 'TechExim\Auth\Permission',
+        'model' => 'TechExim\Auth\Permission\Permission',
         'table' => 'auth_permissions'
     ],
 

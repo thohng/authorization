@@ -1,4 +1,4 @@
-<?php namespace TechExim\Auth;
+<?php namespace TechExim\Auth\Role;
 
 use Illuminate\Database\Eloquent\Model;
 use TechExim\Auth\Contracts\Role as Contract;

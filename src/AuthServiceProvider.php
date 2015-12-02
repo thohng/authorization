@@ -20,8 +20,8 @@ class AuthServiceProvider extends Base
     public function register()
     {
         // TODO: Implement register() method.
-        $modelRole = config('authorization.role.model', 'TechExim\Auth\Role');
-        $modelPermission = config('authorization.permission.model', 'TechExim\Auth\Permission');
+        $modelRole = config('authorization.role.model', 'TechExim\Auth\Role\Role');
+        $modelPermission = config('authorization.permission.model', 'TechExim\Auth\Permission\Permission');
         
         $this->app->singleton('TechExim\Auth\Contracts\Guard', 'TechExim\Auth\Guard');
         $this->app->singleton('TechExim\Auth\Contracts\Role', with(new $modelRole));
