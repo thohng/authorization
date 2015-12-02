@@ -12,7 +12,7 @@ class CreateAuthPermissionItemsTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::table('auth_permission_items', function(Blueprint $table)
+		Schema::create('auth_permission_items', function(Blueprint $table)
 		{
 			$table->integer('permission_id');
 			$table->string('subject_type');

@@ -12,7 +12,7 @@ class CreateAuthRoleItemsTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::table('auth_role_items', function(Blueprint $table)
+		Schema::create('auth_role_items', function(Blueprint $table)
 		{
 			$table->integer('role_id');
             $table->string('subject_type');
