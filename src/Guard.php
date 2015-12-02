@@ -1,5 +1,6 @@
 <?php namespace Auth;
 
+use Auth\Contracts\Guard as Contract;
 use Auth\Contracts\Item;
 use Auth\Contracts\Role;
 use Auth\Contracts\Permission;
@@ -9,7 +10,7 @@ use Auth\Permission\Item as PermissionItem;
 use Auth\Contracts\Role\Repository as RoleRepository;
 use Auth\Contracts\Permission\Repository as PermissionRepository;
 
-class Guard
+class Guard implements Contract
 {
     /**
      * @var RoleRepository
@@ -67,5 +68,24 @@ class Guard
             'permission_id' => $permission->getId(),
             'role_id' => $role->getId()
         ]);
+    }
+
+    public function can(Item $subject, $action, Item $object)
+    {
+        // TODO: Implement can() method.
+        if ($this->permission->getPermissionItem($subject, $action, $object)) {
+            return true;
+        }
+
+        foreach ($this->role->getSubjectRoles($subject, $object) as $role) {
+            foreach ($this->role->getPermissions($role) as $permission) {
+                if ($permission instanceof Permission
+                    && $this->permission->getPermissionItem($subject, $permission->getName(), $object)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

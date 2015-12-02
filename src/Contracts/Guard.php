@@ -40,4 +40,12 @@ interface Guard
      * @return void
      */
     public function assignPermissionToRole(Permission $permission, Role $role);
+
+    /**
+     * @param Item   $subject
+     * @param string $action
+     * @param Item   $object
+     * @return mixed
+     */
+    public function can(Item $subject, $action, Item $object);
 }

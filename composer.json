@@ -24,5 +24,10 @@
             "dev-master": "1.0.0-dev"
         }
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
+    "require-dev": {
+        "fzaninotto/faker": "^1.5",
+        "mockery/mockery": "^0.9.4",
+        "phpspec/phpspec": "^2.4"
+    }
 }
