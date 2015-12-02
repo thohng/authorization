@@ -4,6 +4,7 @@ use TechExim\Auth\Contracts\Guard as Contract;
 use TechExim\Auth\Contracts\Item;
 use TechExim\Auth\Contracts\Role;
 use TechExim\Auth\Contracts\Permission;
+use TechExim\Auth\Exception\NullPointerException;
 use TechExim\Auth\Role\Permission as RolePermission;
 use TechExim\Auth\Role\Item as RoleItem;
 use TechExim\Auth\Permission\Item as PermissionItem;
@@ -53,12 +54,18 @@ class Guard implements Contract
     public function assignRoleByName(Item $subject, $name, Item $object)
     {
         $role = $this->role->getRole($name);
+        if (is_null($role)) {
+            throw new NullPointerException('Unable to find appropriate role');
+        }
         return $this->assignRole($subject, $role, $object);
     }
 
     public function assignPermissionByName(Item $subject, $name, Item $object)
     {
         $permission = $this->permission->getPermission($name);
+        if (is_null($permission)) {
+            throw new NullPointerException('Unable to find appropriate role');
+        }
         return $this->assignPermission($subject, $permission, $object);
     }
 

@@ -1,5 +1,7 @@
 <?php namespace TechExim\Auth\Contracts;
 
+use TechExim\Auth\Exception\NullPointerException;
+
 interface Guard
 {
     /**
@@ -23,6 +25,8 @@ interface Guard
      * @param string $name
      * @param Item   $object
      * @return void
+     *
+     * @throws NullPointerException
      */
     public function assignRoleByName(Item $subject, $name, Item $object);
 
@@ -31,6 +35,8 @@ interface Guard
      * @param string $name
      * @param Item   $object
      * @return void
+     *
+     * @throws NullPointerException
      */
     public function assignPermissionByName(Item $subject, $name, Item $object);
 
