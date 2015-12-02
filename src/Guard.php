@@ -64,7 +64,7 @@ class Guard implements Contract
     {
         $permission = $this->permission->getPermission($name);
         if (is_null($permission)) {
-            throw new NullPointerException('Unable to find appropriate role');
+            throw new NullPointerException('Unable to find appropriate permission');
         }
         return $this->assignPermission($subject, $permission, $object);
     }
