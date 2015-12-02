@@ -8,13 +8,13 @@ class Permission extends Model implements Contract
     public function getName()
     {
         // TODO: Implement getName() method.
-        return $this->id;
+        return $this->name;
     }
 
     public function getId()
     {
         // TODO: Implement getId() method.
-        return $this->name;
+        return $this->id;
     }
 
     public function getTable()
