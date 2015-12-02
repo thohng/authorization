@@ -41,13 +41,6 @@ interface Guard
     public function assignPermissionByName(Item $subject, $name, Item $object);
 
     /**
-     * @param Permission $permission
-     * @param Role       $role
-     * @return void
-     */
-    public function assignPermissionToRole(Permission $permission, Role $role);
-
-    /**
      * @param Item   $subject
      * @param string $action
      * @param Item   $object

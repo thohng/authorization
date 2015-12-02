@@ -2,6 +2,7 @@
 
 use TechExim\Auth\Contracts\Item;
 use TechExim\Auth\Contracts\Role;
+use TechExim\Auth\Contracts\Permission;
 
 interface Repository
 {
@@ -49,4 +50,11 @@ interface Repository
      * @return mixed
      */
     public function getRoles($names = []);
+
+    /**
+     * @param Role       $role
+     * @param Permission $permission
+     * @return mixed
+     */
+    public function assignPermission(Role $role, Permission $permission);
 }

@@ -3,8 +3,8 @@
 use TechExim\Auth\Contracts\Role\Repository as Contract;
 use TechExim\Auth\Contracts\Item;
 use TechExim\Auth\Role\Item as RoleItem;
-use TechExim\Auth\Contracts\Role as RoleContract;
 use TechExim\Auth\Role\Permission as RolePermission;
+use TechExim\Auth\Contracts\Role as RoleContract;
 use TechExim\Auth\Contracts\Permission as PermissionContract;
 use DB;
 
@@ -93,5 +93,14 @@ class Repository implements Contract
         }
 
         return $query->get();
+    }
+
+    public function assignPermission(RoleContract $role, PermissionContract $permission)
+    {
+        // TODO: Implement assignPermission() method.
+        RolePermission::create([
+            'permission_id' => $permission->getId(),
+            'role_id' => $role->getId()
+        ]);
     }
 }

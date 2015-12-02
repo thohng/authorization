@@ -10,7 +10,7 @@ class Item extends Model
      * @var array
      */
     protected $guarded = [];
-    
+
     public function getTable()
     {
         return config('authorization.item.permission');

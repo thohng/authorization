@@ -69,14 +69,6 @@ class Guard implements Contract
         return $this->assignPermission($subject, $permission, $object);
     }
 
-    public function assignPermissionToRole(Permission $permission, Role $role)
-    {
-        RolePermission::create([
-            'permission_id' => $permission->getId(),
-            'role_id' => $role->getId()
-        ]);
-    }
-
     public function hasPermissionTo(Item $subject, $action, Item $object)
     {
         // TODO: Implement can() method.
