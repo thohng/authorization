@@ -20,9 +20,11 @@ class AuthServiceProvider extends Base
     public function register()
     {
         // TODO: Implement register() method.
+        $modelRole = config('authorization.role.model', 'Auth\Role');
+        $modelPermission = config('authorization.permission.model', 'Auth\Permission');
         $this->app->singleton('Auth\Contracts\Guard', 'Auth\Guard');
-        $this->app->singleton('Auth\Contracts\Role', with(new config('authorization.role.model', 'Auth\Role')));
-        $this->app->singleton('Auth\Contracts\Permission', with(new config('authorization.permission.model', 'Auth\Permission')));
+        $this->app->singleton('Auth\Contracts\Role', with(new $modelRole));
+        $this->app->singleton('Auth\Contracts\Permission', with(new $modelPermission));
 
         $this->app->bind('Auth\Contracts\Role\Repository', 'Auth\Role\Repository');
         $this->app->bind('Auth\Contracts\Permission\Repository', 'Auth\Permission\Repository');
