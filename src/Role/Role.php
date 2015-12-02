@@ -30,4 +30,9 @@ class Role extends Model implements Contract, HasPermissions
         $table = config('authorization.role.permissions', 'auth_permissions');
         return $this->belongsToMany($model, $table, 'role_id', 'permission_id');
     }
+
+    public function getTable()
+    {
+        return config('authorization.role.table', 'auth_roles');
+    }
 }

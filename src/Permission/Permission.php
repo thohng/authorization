@@ -17,4 +17,8 @@ class Permission extends Model implements Contract
         return $this->name;
     }
 
+    public function getTable()
+    {
+        return config('authorization.permission.table', 'auth_permissions');
+    }
 }
