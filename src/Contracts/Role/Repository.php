@@ -45,7 +45,8 @@ interface Repository
     public function remove(Role $role);
 
     /**
+     * @param array $names
      * @return mixed
      */
-    public function getRoles();
+    public function getRoles($names = []);
 }

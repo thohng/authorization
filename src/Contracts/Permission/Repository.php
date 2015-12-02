@@ -32,7 +32,8 @@ interface Repository
     public function remove(Permission $permission);
 
     /**
+     * @param array $names
      * @return mixed
      */
-    public function getPermissions();
+    public function getPermissions($names = []);
 }

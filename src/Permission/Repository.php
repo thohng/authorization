@@ -51,9 +51,14 @@ class Repository implements Contract
         $permission->delete();
     }
 
-    public function getPermissions()
+    public function getPermissions($names = [])
     {
         // TODO: Implement getPermissions() method.
-        return $this->permission->query()->get();
+        $query = $this->permission->query();
+        if (count($names)) {
+            $query->whereIn('name', $names);
+        }
+
+        return $query->get();
     }
 }

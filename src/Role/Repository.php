@@ -84,9 +84,14 @@ class Repository implements Contract
         $role->delete();
     }
 
-    public function getRoles()
+    public function getRoles($names = [])
     {
         // TODO: Implement getRoles() method.
-        return $this->role->query()->get();
+        $query = $this->role->query();
+        if (count($names)) {
+            $query->whereIn('name', $names);
+        }
+
+        return $query->get();
     }
 }
