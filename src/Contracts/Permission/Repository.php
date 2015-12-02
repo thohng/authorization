@@ -30,4 +30,9 @@ interface Repository
      * @return void
      */
     public function remove(Permission $permission);
+
+    /**
+     * @return mixed
+     */
+    public function getPermissions();
 }

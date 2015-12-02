@@ -43,4 +43,9 @@ interface Repository
      * @return void
      */
     public function remove(Role $role);
+
+    /**
+     * @return mixed
+     */
+    public function getRoles();
 }

@@ -70,4 +70,10 @@ class Repository implements Contract
 
         $role->delete();
     }
+
+    public function getRoles()
+    {
+        // TODO: Implement getRoles() method.
+        return Role::all();
+    }
 }

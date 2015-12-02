@@ -40,4 +40,10 @@ class Repository implements Contract
         // TODO: Implement remove() method.
         $permission->delete();
     }
+
+    public function getPermissions()
+    {
+        // TODO: Implement getPermissions() method.
+        return Permission::all();
+    }
 }
