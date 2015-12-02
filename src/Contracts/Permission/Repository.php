@@ -1,7 +1,7 @@
-<?php namespace Auth\Contracts\Permission;
+<?php namespace TechExim\Auth\Contracts\Permission;
 
-use Auth\Contracts\Permission;
-use Auth\Contracts\Item;
+use TechExim\Auth\Contracts\Permission;
+use TechExim\Auth\Contracts\Item;
 
 interface Repository
 {

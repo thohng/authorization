@@ -1,4 +1,4 @@
-<?php namespace Auth\Tests;
+<?php namespace TechExim\Auth\Tests;
 
 class GuardTest extends TestCase
 {

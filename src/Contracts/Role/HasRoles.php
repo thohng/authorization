@@ -1,4 +1,4 @@
-<?php namespace Auth\Contracts\Role;
+<?php namespace TechExim\Auth\Contracts\Role;
 
 interface HasRoles
 {

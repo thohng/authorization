@@ -1,8 +1,8 @@
-<?php namespace Auth;
+<?php namespace TechExim\Auth;
 
 use Illuminate\Database\Eloquent\Model;
-use Auth\Contracts\Role as Contract;
-use Auth\Contracts\Permission\HasPermissions;
+use TechExim\Auth\Contracts\Role as Contract;
+use TechExim\Auth\Contracts\Permission\HasPermissions;
 
 class Role extends Model implements Contract, HasPermissions
 {
@@ -26,7 +26,7 @@ class Role extends Model implements Contract, HasPermissions
 
     public function permissions()
     {
-        $model = config('authorization.permission.model', 'Auth\Permission');
+        $model = config('authorization.permission.model', 'TechExim\Auth\Permission');
         $table = config('authorization.role.permissions', 'auth_permissions');
         return $this->belongsToMany($model, $table, 'role_id', 'permission_id');
     }

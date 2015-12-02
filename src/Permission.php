@@ -1,7 +1,7 @@
-<?php namespace Auth;
+<?php namespace TechExim\Auth;
 
 use Illuminate\Database\Eloquent\Model;
-use Auth\Contracts\Permission as Contract;
+use TechExim\Auth\Contracts\Permission as Contract;
 
 class Permission extends Model implements Contract
 {

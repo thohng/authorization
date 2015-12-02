@@ -1,7 +1,7 @@
-<?php namespace Auth\Contracts\Role;
+<?php namespace TechExim\Auth\Contracts\Role;
 
-use Auth\Contracts\Item;
-use Auth\Contracts\Role;
+use TechExim\Auth\Contracts\Item;
+use TechExim\Auth\Contracts\Role;
 
 interface Repository
 {

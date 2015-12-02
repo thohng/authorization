@@ -1,4 +1,4 @@
-<?php namespace Auth\Contracts;
+<?php namespace TechExim\Auth\Contracts;
 
 interface Item
 {

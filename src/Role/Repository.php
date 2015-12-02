@@ -1,12 +1,12 @@
-<?php namespace Auth\Role;
+<?php namespace TechExim\Auth\Role;
 
-use Auth\Contracts\Role\Repository as Contract;
-use Auth\Contracts\Item;
-use Auth\Role;
-use Auth\Role\Item as RoleItem;
-use Auth\Contracts\Role as RoleContract;
-use Auth\Role\Permission as RolePermission;
-use Auth\Permission;
+use TechExim\Auth\Contracts\Role\Repository as Contract;
+use TechExim\Auth\Contracts\Item;
+use TechExim\Auth\Role;
+use TechExim\Auth\Role\Item as RoleItem;
+use TechExim\Auth\Contracts\Role as RoleContract;
+use TechExim\Auth\Role\Permission as RolePermission;
+use TechExim\Auth\Permission;
 use DB;
 
 class Repository implements Contract

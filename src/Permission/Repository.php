@@ -1,9 +1,9 @@
-<?php namespace Auth\Permission;
+<?php namespace TechExim\Auth\Permission;
 
-use Auth\Contracts\Permission\Repository as Contract;
-use Auth\Contracts\Item;
-use Auth\Permission;
-use Auth\Permission\Item as PermissionItem;
+use TechExim\Auth\Contracts\Permission\Repository as Contract;
+use TechExim\Auth\Contracts\Item;
+use TechExim\Auth\Permission;
+use TechExim\Auth\Permission\Item as PermissionItem;
 
 class Repository implements Contract
 {

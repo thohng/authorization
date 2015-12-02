@@ -1,14 +1,14 @@
-<?php namespace Auth;
+<?php namespace TechExim\Auth;
 
-use Auth\Contracts\Guard as Contract;
-use Auth\Contracts\Item;
-use Auth\Contracts\Role;
-use Auth\Contracts\Permission;
-use Auth\Role\Permission as RolePermission;
-use Auth\Role\Item as RoleItem;
-use Auth\Permission\Item as PermissionItem;
-use Auth\Contracts\Role\Repository as RoleRepository;
-use Auth\Contracts\Permission\Repository as PermissionRepository;
+use TechExim\Auth\Contracts\Guard as Contract;
+use TechExim\Auth\Contracts\Item;
+use TechExim\Auth\Contracts\Role;
+use TechExim\Auth\Contracts\Permission;
+use TechExim\Auth\Role\Permission as RolePermission;
+use TechExim\Auth\Role\Item as RoleItem;
+use TechExim\Auth\Permission\Item as PermissionItem;
+use TechExim\Auth\Contracts\Role\Repository as RoleRepository;
+use TechExim\Auth\Contracts\Permission\Repository as PermissionRepository;
 
 class Guard implements Contract
 {

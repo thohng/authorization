@@ -1,4 +1,4 @@
-<?php namespace Auth\Contracts\Permission;
+<?php namespace TechExim\Auth\Contracts\Permission;
 
 interface HasPermissions
 {

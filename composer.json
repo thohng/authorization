@@ -1,5 +1,5 @@
 {
-    "name": "dotronglong/authorization",
+    "name": "techexim/authorization",
     "description": "Roles based Authorization Scheme",
     "license": "MIT",
     "authors": [
@@ -15,8 +15,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Auth\\": "src",
-            "Auth\\Tests\\": "tests"
+            "TechExim\\Auth\\": "src",
+            "TechExim\\Auth\\Tests\\": "tests"
         }
     },
     "extra": {

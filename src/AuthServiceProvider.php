@@ -1,4 +1,4 @@
-<?php namespace Auth;
+<?php namespace TechExim\Auth;
 
 use Illuminate\Support\ServiceProvider as Base;
 
@@ -20,24 +20,25 @@ class AuthServiceProvider extends Base
     public function register()
     {
         // TODO: Implement register() method.
-        $modelRole = config('authorization.role.model', 'Auth\Role');
-        $modelPermission = config('authorization.permission.model', 'Auth\Permission');
-        $this->app->singleton('Auth\Contracts\Guard', 'Auth\Guard');
-        $this->app->singleton('Auth\Contracts\Role', with(new $modelRole));
-        $this->app->singleton('Auth\Contracts\Permission', with(new $modelPermission));
+        $modelRole = config('authorization.role.model', 'TechExim\Auth\Role');
+        $modelPermission = config('authorization.permission.model', 'TechExim\Auth\Permission');
+        
+        $this->app->singleton('TechExim\Auth\Contracts\Guard', 'TechExim\Auth\Guard');
+        $this->app->singleton('TechExim\Auth\Contracts\Role', with(new $modelRole));
+        $this->app->singleton('TechExim\Auth\Contracts\Permission', with(new $modelPermission));
 
-        $this->app->bind('Auth\Contracts\Role\Repository', 'Auth\Role\Repository');
-        $this->app->bind('Auth\Contracts\Permission\Repository', 'Auth\Permission\Repository');
+        $this->app->bind('TechExim\Auth\Contracts\Role\Repository', 'TechExim\Auth\Role\Repository');
+        $this->app->bind('TechExim\Auth\Contracts\Permission\Repository', 'TechExim\Auth\Permission\Repository');
     }
 
     public function provides()
     {
         return [
-            'Auth\Contracts\Guard',
-            'Auth\Contracts\Role',
-            'Auth\Contracts\Permission',
-            'Auth\Contracts\Role\Repository',
-            'Auth\Contracts\Permission\Repository'
+            'TechExim\Auth\Contracts\Guard',
+            'TechExim\Auth\Contracts\Role',
+            'TechExim\Auth\Contracts\Permission',
+            'TechExim\Auth\Contracts\Role\Repository',
+            'TechExim\Auth\Contracts\Permission\Repository'
         ];
     }
 }

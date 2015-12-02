@@ -1,4 +1,4 @@
-<?php namespace Auth\Permission;
+<?php namespace TechExim\Auth\Permission;
 
 use Illuminate\Database\Eloquent\Model;
 
