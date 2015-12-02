@@ -52,13 +52,13 @@ class Guard implements Contract
 
     public function assignRoleByName(Item $subject, $name, Item $object)
     {
-        $role = $this->role->findRoleByName($name);
+        $role = $this->role->getRole($name);
         return $this->assignRole($subject, $role, $object);
     }
 
     public function assignPermissionByName(Item $subject, $name, Item $object)
     {
-        $permission = $this->permission->findPermissionByName($name);
+        $permission = $this->permission->getPermission($name);
         return $this->assignPermission($subject, $permission, $object);
     }
 
