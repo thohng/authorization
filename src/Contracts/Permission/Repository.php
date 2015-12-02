@@ -18,4 +18,16 @@ interface Repository
      * @return mixed
      */
     public function getPermissionItem(Item $subject, $name, Item $object);
+
+    /**
+     * @param $name
+     * @return Permission
+     */
+    public function create($name);
+
+    /**
+     * @param Permission $permission
+     * @return void
+     */
+    public function remove(Permission $permission);
 }

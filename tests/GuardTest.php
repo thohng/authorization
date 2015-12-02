@@ -2,8 +2,8 @@
 
 class GuardTest extends TestCase
 {
-    public function testAssignRole()
+    public function testHasPermissionTo()
     {
-        $this->assertTrue(true);
+
     }
 }

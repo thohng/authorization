@@ -4,6 +4,7 @@ use TechExim\Auth\Contracts\Permission\Repository as Contract;
 use TechExim\Auth\Contracts\Item;
 use TechExim\Auth\Permission;
 use TechExim\Auth\Permission\Item as PermissionItem;
+use TechExim\Auth\Contracts\Permission as PermissionContract;
 
 class Repository implements Contract
 {
@@ -27,5 +28,17 @@ class Repository implements Contract
         }
 
         return null;
+    }
+
+    public function create($name)
+    {
+        // TODO: Implement create() method.
+        return Permission::create(['name' => $name]);
+    }
+
+    public function remove(PermissionContract $permission)
+    {
+        // TODO: Implement remove() method.
+        $permission->delete();
     }
 }

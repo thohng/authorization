@@ -47,5 +47,5 @@ interface Guard
      * @param Item   $object
      * @return mixed
      */
-    public function can(Item $subject, $action, Item $object);
+    public function hasPermissionTo(Item $subject, $action, Item $object);
 }

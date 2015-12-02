@@ -31,4 +31,16 @@ interface Repository
      * @return mixed
      */
     public function getPermissions(Role $role);
+
+    /**
+     * @param $name
+     * @return Role
+     */
+    public function create($name);
+
+    /**
+     * @param Role $role
+     * @return void
+     */
+    public function remove(Role $role);
 }

@@ -55,4 +55,20 @@ class Repository implements Contract
             ->where('role_id', $role->getId())
             ->get(['p.*']);
     }
+
+    public function create($name)
+    {
+        // TODO: Implement create() method.
+        return Role::create(['name' => $name]);
+    }
+
+    public function remove(RoleContract $role)
+    {
+        // TODO: Implement remove() method.
+        foreach ($this->getPermissions($role) as $permission) {
+            $permission->delete();
+        }
+
+        $role->delete();
+    }
 }
