@@ -5,15 +5,28 @@ use TechExim\Auth\Contracts\Item;
 use TechExim\Auth\Role\Item as RoleItem;
 use TechExim\Auth\Contracts\Role as RoleContract;
 use TechExim\Auth\Role\Permission as RolePermission;
-use TechExim\Auth\Permission\Permission;
+use TechExim\Auth\Contracts\Permission as PermissionContract;
 use DB;
 
 class Repository implements Contract
 {
+    /**
+     * @var RoleContract
+     */
+    protected $role;
+
+    protected $permission;
+
+    public function __construct(RoleContract $role, PermissionContract $permission)
+    {
+        $this->role = $role;
+        $this->permission = $permission;
+    }
+
     public function getRole($name)
     {
         // TODO: Implement getRole() method.
-        return Role::where('name', $name)->first();
+        return $this->role->query()->where('name', $name)->first();
     }
 
     public function getRoleItem(Item $subject, $name, Item $object)
@@ -35,8 +48,8 @@ class Repository implements Contract
     public function getSubjectRoles(Item $subject, Item $object)
     {
         // TODO: Implement getSubjectRoles() method.
-        return Role::query()
-            ->from(DB::raw('`'.Role::getTable().'` r'))
+        return $this->role->query()
+            ->from(DB::raw('`'.$this->role->getTable().'` r'))
             ->join('`'.RoleItem::getTable().'` ri', 'r.id', '=', 'ri.role_id')
             ->where('subject_type', $subject->getType())
             ->where('subject_id', $subject->getId())
@@ -48,8 +61,8 @@ class Repository implements Contract
     public function getPermissions(RoleContract $role)
     {
         // TODO: Implement getPermissions() method.
-        return Permission::query()
-            ->from(DB::raw('`'.Permission::getTable().'` p'))
+        return $this->permission->query()
+            ->from(DB::raw('`'.$this->permission->getTable().'` p'))
             ->join(DB::raw('`'.RolePermission::getTable().'` rp'), 'p.id', '=', 'rp.permission_id')
             ->where('role_id', $role->getId())
             ->get(['p.*']);
@@ -58,7 +71,7 @@ class Repository implements Contract
     public function create($name)
     {
         // TODO: Implement create() method.
-        return Role::create(['name' => $name]);
+        return $this->role->create(['name' => $name]);
     }
 
     public function remove(RoleContract $role)
@@ -74,6 +87,6 @@ class Repository implements Contract
     public function getRoles()
     {
         // TODO: Implement getRoles() method.
-        return Role::all();
+        return $this->role->query()->get();
     }
 }

@@ -7,10 +7,20 @@ use TechExim\Auth\Contracts\Permission as PermissionContract;
 
 class Repository implements Contract
 {
+    /**
+     * @var PermissionContract
+     */
+    protected $permission;
+
+    public function __construct(PermissionContract $permission)
+    {
+        $this->permission = $permission;
+    }
+
     public function getPermission($name)
     {
         // TODO: Implement getPermission() method.
-        return Permission::where('name', $name)->first();
+        return $this->permission->query()->where('name', $name)->first();
     }
 
     public function getPermissionItem(Item $subject, $name, Item $object)
@@ -32,7 +42,7 @@ class Repository implements Contract
     public function create($name)
     {
         // TODO: Implement create() method.
-        return Permission::create(['name' => $name]);
+        return $this->permission->create(['name' => $name]);
     }
 
     public function remove(PermissionContract $permission)
@@ -44,6 +54,6 @@ class Repository implements Contract
     public function getPermissions()
     {
         // TODO: Implement getPermissions() method.
-        return Permission::all();
+        return $this->permission->query()->get();
     }
 }
