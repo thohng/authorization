@@ -180,11 +180,11 @@ class Repository implements Contract
     public function hasRole(Item $subject, RoleContract $role, Item $object)
     {
         // TODO: Implement hasRole() method.
-        return RoleItem::where('subject_type', $subject->getType())
+        return RoleItem::where('role_id', $role->getId())
+            ->where('subject_type', $subject->getType())
             ->where('subject_id', $subject->getId())
             ->where('object_type', $object->getType())
             ->where('object_id', $object->getId())
-            ->where('role_id', $role->getId())
             ->first() ? true : false;
     }
 
