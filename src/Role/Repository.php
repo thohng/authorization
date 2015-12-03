@@ -16,6 +16,9 @@ class Repository implements Contract
      */
     protected $role;
 
+    /**
+     * @var PermissionContract
+     */
     protected $permission;
 
     public function __construct(RoleContract $role, PermissionContract $permission)
@@ -36,11 +39,11 @@ class Repository implements Contract
         $role = $this->getRole($name);
         if ($role) {
             return RoleItem::where('role_id', $role->getId())
-                           ->where('subject_type', $subject->getType())
-                           ->where('subject_id', $subject->getId())
-                           ->where('object_type', $object->getType())
-                           ->where('object_id', $object->getId())
-                           ->first();
+                ->where('subject_type', $subject->getType())
+                ->where('subject_id', $subject->getId())
+                ->where('object_type', $object->getType())
+                ->where('object_id', $object->getId())
+                ->first();
         }
 
         return null;
@@ -51,11 +54,11 @@ class Repository implements Contract
         // TODO: Implement getSubjectRoles() method.
         return $this->role->query()
             ->from(DB::raw('`'.$this->role->getTable().'` r'))
-            ->join('`'.with(new RoleItem)->getTable().'` ri', 'r.id', '=', 'ri.role_id')
-            ->where('subject_type', $subject->getType())
-            ->where('subject_id', $subject->getId())
-            ->where('object_type', $object->getType())
-            ->where('object_id', $object->getId())
+            ->join(DB::raw('`'.with(new RoleItem)->getTable().'` ri'), 'r.id', '=', 'ri.role_id')
+            ->where('ri.subject_type', $subject->getType())
+            ->where('ri.subject_id', $subject->getId())
+            ->where('ri.object_type', $object->getType())
+            ->where('ri.object_id', $object->getId())
             ->get(['r.*']);
     }
 
@@ -65,7 +68,7 @@ class Repository implements Contract
         return $this->permission->query()
             ->from(DB::raw('`'.$this->permission->getTable().'` p'))
             ->join(DB::raw('`'.with(new RolePermission)->getTable().'` rp'), 'p.id', '=', 'rp.permission_id')
-            ->where('role_id', $role->getId())
+            ->where('rp.role_id', $role->getId())
             ->get(['p.*']);
     }
 
@@ -139,10 +142,12 @@ class Repository implements Contract
     {
         // TODO: Implement getObjectRoles() method.
         return $this->role->query()
-                    ->from(DB::raw('`'.$this->role->getTable().'` r'))
-                    ->join('`'.with(new RoleObject)->getTable().'` ro', 'r.id', '=', 'ro.role_id')
-                    ->where('object_type', $object->getType())
-                    ->where('object_id', $object->getId())
-                    ->get();
+            ->from(DB::raw('`'.$this->role->getTable().'` r'))
+            ->join(DB::raw('`'.with(new RoleObject)->getTable().'` ro'), 'r.id', '=', 'ro.role_id')
+            ->where('ro.object_type', $object->getType())
+            ->where('ro.object_id', $object->getId())
+            ->whereNull('r.deleted_at')
+            ->withTrashed()
+            ->get(['r.*']);
     }
 }
