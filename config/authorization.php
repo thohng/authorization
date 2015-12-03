@@ -10,7 +10,8 @@ return [
     'role' => [
         'model' => 'TechExim\Auth\Role\Role',
         'table' => 'auth_roles',
-        'permissions' => 'auth_role_permissions'
+        'permissions' => 'auth_role_permissions',
+        'object' => 'auth_role_objects'
     ],
 
     /*

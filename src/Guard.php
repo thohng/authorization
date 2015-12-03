@@ -71,7 +71,7 @@ class Guard implements Contract
 
     public function hasPermissionTo(Item $subject, $action, Item $object)
     {
-        // TODO: Implement can() method.
+        // TODO: Implement hasPermissionTo() method.
         if ($this->permission->getPermissionItem($subject, $action, $object)) {
             return true;
         }

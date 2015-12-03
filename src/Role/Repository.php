@@ -3,6 +3,7 @@
 use TechExim\Auth\Contracts\Role\Repository as Contract;
 use TechExim\Auth\Contracts\Item;
 use TechExim\Auth\Role\Item as RoleItem;
+use TechExim\Auth\Role\Object as RoleObject;
 use TechExim\Auth\Role\Permission as RolePermission;
 use TechExim\Auth\Contracts\Role as RoleContract;
 use TechExim\Auth\Contracts\Permission as PermissionContract;
@@ -71,7 +72,9 @@ class Repository implements Contract
     public function create($name)
     {
         // TODO: Implement create() method.
-        return $this->role->create(['name' => $name]);
+        if (!$this->getRole($name)) {
+            return $this->role->create(['name' => $name]);
+        }
     }
 
     public function remove(RoleContract $role)
@@ -98,9 +101,37 @@ class Repository implements Contract
     public function assignPermission(RoleContract $role, PermissionContract $permission)
     {
         // TODO: Implement assignPermission() method.
-        RolePermission::create([
-            'permission_id' => $permission->getId(),
-            'role_id' => $role->getId()
-        ]);
+        if (!RolePermission::where('permission_id', $permission->getId())
+            ->where('role_id', $role->getId())
+            ->first()) {
+            RolePermission::create([
+                'permission_id' => $permission->getId(),
+                'role_id' => $role->getId()
+            ]);
+        }
+    }
+
+    public function assignObject(Item $object, RoleContract $role)
+    {
+        // TODO: Implement assignObject() method.
+        if (!RoleObject::where('object_type', $object->getType())
+            ->where('object_id', $object->getId())
+            ->where('role_id', $role->getId())
+            ->first()) {
+            RoleObject::create([
+                'object_type' => $object->getType(),
+                'object_id' => $object->getId(),
+                'role_id' => $role->getId()
+            ]);
+        }
+    }
+
+    public function assignObjectByName(Item $object, $name)
+    {
+        // TODO: Implement assignObjectByName() method.
+        $role = $this->getRole($name);
+        if ($role) {
+            $this->assignObject($object, $role);
+        }
     }
 }

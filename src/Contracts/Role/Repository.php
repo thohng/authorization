@@ -57,4 +57,21 @@ interface Repository
      * @return mixed
      */
     public function assignPermission(Role $role, Permission $permission);
+
+    /**
+     * Assign a role to an object
+     *
+     * @param Item $object
+     * @param Role $role
+     * @return mixed
+     */
+    public function assignObject(Item $object, Role $role);
+
+    /**
+     * Assign a name (role) to an object
+     * @param Item $object
+     * @param      $name
+     * @return mixed
+     */
+    public function assignObjectByName(Item $object, $name);
 }
