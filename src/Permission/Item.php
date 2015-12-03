@@ -17,6 +17,13 @@ class Item extends Model
         'object_id'
     ];
 
+    /**
+     * Indicates if the IDs are auto-incrementing.
+     *
+     * @var bool
+     */
+    public $incrementing = false;
+
     public function getTable()
     {
         return config('authorization.item.permission', 'auth_permission_items');
