@@ -111,7 +111,7 @@ class Repository implements Contract
         }
     }
 
-    public function assignObject(Item $object, RoleContract $role)
+    public function assignObject(RoleContract $role, Item $object)
     {
         // TODO: Implement assignObject() method.
         if (!RoleObject::where('object_type', $object->getType())
@@ -126,7 +126,7 @@ class Repository implements Contract
         }
     }
 
-    public function assignObjectByName(Item $object, $name)
+    public function assignObjectByName($name, Item $object)
     {
         // TODO: Implement assignObjectByName() method.
         $role = $this->getRole($name);

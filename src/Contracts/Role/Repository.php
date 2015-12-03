@@ -61,17 +61,17 @@ interface Repository
     /**
      * Assign a role to an object
      *
-     * @param Item $object
      * @param Role $role
+     * @param Item $object
      * @return mixed
      */
-    public function assignObject(Item $object, Role $role);
+    public function assignObject(Role $role, Item $object);
 
     /**
      * Assign a name (role) to an object
-     * @param Item $object
      * @param      $name
+     * @param Item $object
      * @return mixed
      */
-    public function assignObjectByName(Item $object, $name);
+    public function assignObjectByName($name, Item $object);
 }
