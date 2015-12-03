@@ -131,7 +131,7 @@ class Repository implements Contract
         // TODO: Implement assignObjectByName() method.
         $role = $this->getRole($name);
         if ($role) {
-            $this->assignObject($object, $role);
+            $this->assignObject($role, $object);
         }
     }
 }
