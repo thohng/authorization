@@ -134,4 +134,15 @@ class Repository implements Contract
             $this->assignObject($role, $object);
         }
     }
+
+    public function getObjectRoles(Item $object)
+    {
+        // TODO: Implement getObjectRoles() method.
+        return $this->role->query()
+                    ->from(DB::raw('`'.$this->role->getTable().'` r'))
+                    ->join('`'.RoleObject::getTable().'` ro', 'r.id', '=', 'ro.role_id')
+                    ->where('object_type', $object->getType())
+                    ->where('object_id', $object->getId())
+                    ->get();
+    }
 }

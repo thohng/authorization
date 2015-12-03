@@ -74,4 +74,12 @@ interface Repository
      * @return mixed
      */
     public function assignObjectByName($name, Item $object);
+
+    /**
+     * Get all object's roles
+     * 
+     * @param Item $object
+     * @return mixed
+     */
+    public function getObjectRoles(Item $object);
 }
