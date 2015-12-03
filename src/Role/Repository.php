@@ -51,7 +51,7 @@ class Repository implements Contract
         // TODO: Implement getSubjectRoles() method.
         return $this->role->query()
             ->from(DB::raw('`'.$this->role->getTable().'` r'))
-            ->join('`'.RoleItem::getTable().'` ri', 'r.id', '=', 'ri.role_id')
+            ->join('`'.with(new RoleItem)->getTable().'` ri', 'r.id', '=', 'ri.role_id')
             ->where('subject_type', $subject->getType())
             ->where('subject_id', $subject->getId())
             ->where('object_type', $object->getType())
@@ -64,7 +64,7 @@ class Repository implements Contract
         // TODO: Implement getPermissions() method.
         return $this->permission->query()
             ->from(DB::raw('`'.$this->permission->getTable().'` p'))
-            ->join(DB::raw('`'.RolePermission::getTable().'` rp'), 'p.id', '=', 'rp.permission_id')
+            ->join(DB::raw('`'.with(new RolePermission)->getTable().'` rp'), 'p.id', '=', 'rp.permission_id')
             ->where('role_id', $role->getId())
             ->get(['p.*']);
     }
@@ -140,7 +140,7 @@ class Repository implements Contract
         // TODO: Implement getObjectRoles() method.
         return $this->role->query()
                     ->from(DB::raw('`'.$this->role->getTable().'` r'))
-                    ->join('`'.RoleObject::getTable().'` ro', 'r.id', '=', 'ro.role_id')
+                    ->join('`'.with(new RoleObject)->getTable().'` ro', 'r.id', '=', 'ro.role_id')
                     ->where('object_type', $object->getType())
                     ->where('object_id', $object->getId())
                     ->get();
