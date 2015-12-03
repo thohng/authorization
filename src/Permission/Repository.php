@@ -20,23 +20,16 @@ class Repository implements Contract
     public function getPermission($name)
     {
         // TODO: Implement getPermission() method.
-        return $this->permission->query()->where('name', $name)->first();
-    }
+        $builder = $this->permission->query();
 
-    public function getPermissionItem(Item $subject, $name, Item $object)
-    {
-        // TODO: Implement getPermissionItem() method.
-        $permission = $this->getPermission($name);
-        if ($permission) {
-            return PermissionItem::where('permission_id', $permission->getId())
-                                 ->where('subject_type', $subject->getType())
-                                 ->where('subject_id', $subject->getId())
-                                 ->where('object_type', $object->getType())
-                                 ->where('object_id', $object->getId())
-                                 ->first();
+        $id = (int) $name;
+        if (is_int($id) && $id) {
+            $builder->where('id', $id);
+        } else {
+            $builder->where('name', $name);
         }
 
-        return null;
+        return $builder->first();
     }
 
     public function create($name)
@@ -85,22 +78,42 @@ class Repository implements Contract
     public function hasPermission(Item $subject, PermissionContract $permission, Item $object)
     {
         // TODO: Implement hasPermission() method.
-        return PermissionItem::where('permission_id', $permission->getId())
-            ->where('subject_type', $subject->getType())
-            ->where('subject_id', $subject->getId())
-            ->where('object_type', $object->getType())
-            ->where('object_id', $object->getId())
-            ->first() ? true : false;
+        return $this->getPermissionItem($subject, $permission, $object) ? true : false;
     }
 
     public function hasPermissionByName(Item $subject, $name, Item $object)
     {
         // TODO: Implement hasPermissionByName() method.
+        return $this->getPermissionItemByName($subject, $name, $object);
+    }
+
+    public function getPermissionItem(Item $subject, PermissionContract $permission, Item $object)
+    {
+        // TODO: Implement getPermissionItem() method.
+        return PermissionItem::where('permission_id', $permission->getId())
+            ->where('subject_type', $subject->getType())
+            ->where('subject_id', $subject->getId())
+            ->where('object_type', $object->getType())
+            ->where('object_id', $object->getId())
+            ->first();
+    }
+
+    public function getPermissionItemByName(Item $subject, $name, Item $object)
+    {
+        // TODO: Implement getPermissionItemByName() method.
         $permission = $this->getPermission($name);
         if ($permission) {
-            return $this->hasPermission($subject, $permission, $object);
+            return $this->getPermissionItem($subject, $permission, $object);
         }
+    }
 
-        return false;
+    public function removePermission(Item $subject, PermissionContract $permission, Item $object)
+    {
+        // TODO: Implement removePermission() method.
+    }
+
+    public function removePermissionByName(Item $subject, $name, Item $object)
+    {
+        // TODO: Implement removePermissionByName() method.
     }
 }

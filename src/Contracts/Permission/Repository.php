@@ -7,18 +7,10 @@ use TechExim\Auth\Exception\NullPointerException;
 interface Repository
 {
     /**
-     * @param $name
+     * @param int|string $name
      * @return Permission
      */
     public function getPermission($name);
-
-    /**
-     * @param Item $subject
-     * @param      $name
-     * @param Item $object
-     * @return mixed
-     */
-    public function getPermissionItem(Item $subject, $name, Item $object);
 
     /**
      * @param $name
@@ -71,4 +63,36 @@ interface Repository
      * @return bool
      */
     public function hasPermissionByName(Item $subject, $name, Item $object);
+
+    /**
+     * @param Item       $subject
+     * @param Permission $permission
+     * @param Item       $object
+     * @return mixed
+     */
+    public function getPermissionItem(Item $subject, Permission $permission, Item $object);
+
+    /**
+     * @param Item   $subject
+     * @param string $name
+     * @param Item   $object
+     * @return mixed
+     */
+    public function getPermissionItemByName(Item $subject, $name, Item $object);
+
+    /**
+     * @param Item       $subject
+     * @param Permission $permission
+     * @param Item       $object
+     * @return mixed
+     */
+    public function removePermission(Item $subject, Permission $permission, Item $object);
+
+    /**
+     * @param Item   $subject
+     * @param string $name
+     * @param Item   $object
+     * @return mixed
+     */
+    public function removePermissionByName(Item $subject, $name, Item $object);
 }

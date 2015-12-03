@@ -2,6 +2,7 @@
 
 use TechExim\Auth\Contracts\Role\Repository as Contract;
 use TechExim\Auth\Contracts\Item;
+use TechExim\Auth\Exception\NullPointerException;
 use TechExim\Auth\Role\Item as RoleItem;
 use TechExim\Auth\Role\Object as RoleObject;
 use TechExim\Auth\Role\Permission as RolePermission;
@@ -30,23 +31,16 @@ class Repository implements Contract
     public function getRole($name)
     {
         // TODO: Implement getRole() method.
-        return $this->role->query()->where('name', $name)->first();
-    }
+        $builder = $this->role->query();
 
-    public function getRoleItem(Item $subject, $name, Item $object)
-    {
-        // TODO: Implement getRoleItem() method.
-        $role = $this->getRole($name);
-        if ($role) {
-            return RoleItem::where('role_id', $role->getId())
-                ->where('subject_type', $subject->getType())
-                ->where('subject_id', $subject->getId())
-                ->where('object_type', $object->getType())
-                ->where('object_id', $object->getId())
-                ->first();
+        $id = (int) $name;
+        if (is_int($id) && $id) {
+            $builder->where('id', $id);
+        } else {
+            $builder->where('name', $name);
         }
 
-        return null;
+        return $builder->first();
     }
 
     public function getSubjectRoles(Item $subject, Item $object)
@@ -180,23 +174,13 @@ class Repository implements Contract
     public function hasRole(Item $subject, RoleContract $role, Item $object)
     {
         // TODO: Implement hasRole() method.
-        return RoleItem::where('role_id', $role->getId())
-            ->where('subject_type', $subject->getType())
-            ->where('subject_id', $subject->getId())
-            ->where('object_type', $object->getType())
-            ->where('object_id', $object->getId())
-            ->first() ? true : false;
+        return $this->getRoleItem($subject, $role, $object) ? true : false;
     }
 
     public function hasRoleByName(Item $subject, $name, Item $object)
     {
         // TODO: Implement hasRoleByName() method.
-        $role = $this->getRole($name);
-        if ($role) {
-            return $this->hasRole($subject, $role, $object);
-        }
-
-        return false;
+        return $this->getRoleItemByName($subject, $name, $object) ? true : false;
     }
 
     public function getSubjectItems($type, Item $object, $withTrashed = false)
@@ -215,7 +199,7 @@ class Repository implements Contract
                     ->withTrashed();
         }
 
-        return $builder->get(['s.*']);
+        return $builder->get(['s.*', 'ro.role_id']);
     }
 
     public function getObjectItems(Item $subject, $type, $withTrashed = false)
@@ -234,6 +218,46 @@ class Repository implements Contract
                     ->withTrashed();
         }
 
-        return $builder->get(['o.*']);
+        return $builder->get(['o.*', 'ro.role_id']);
+    }
+
+    public function getRoleItem(Item $subject, RoleContract $role, Item $object)
+    {
+        // TODO: Implement getRoleItem() method.
+        return RoleItem::where('role_id', $role->getId())
+            ->where('subject_type', $subject->getType())
+            ->where('subject_id', $subject->getId())
+            ->where('object_type', $object->getType())
+            ->where('object_id', $object->getId())
+            ->first();
+    }
+
+    public function getRoleItemByName(Item $subject, $name, Item $object)
+    {
+        // TODO: Implement getRoleItemByName() method.
+        $role = $this->getRole($name);
+        if ($role) {
+            return $this->getRoleItem($subject, $role, $object);
+        } else {
+            throw new NullPointerException('Specified role is invalid');
+        }
+    }
+
+    public function removeRole(Item $subject, RoleContract $role, Item $object)
+    {
+        // TODO: Implement removeRole() method.
+        $roleItem = $this->getRoleItem($subject, $role, $object);
+        if ($roleItem) {
+            $roleItem->delete();
+        }
+    }
+
+    public function removeRoleByName(Item $subject, $name, Item $object)
+    {
+        // TODO: Implement removeRoleByName() method.
+        $roleItem = $this->getRoleItemByName($subject, $name, $object);
+        if ($roleItem) {
+            $roleItem->delete();
+        }
     }
 }

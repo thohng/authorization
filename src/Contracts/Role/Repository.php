@@ -8,10 +8,18 @@ use TechExim\Auth\Exception\NullPointerException;
 interface Repository
 {
     /**
-     * @param string $name
+     * @param int|string $name
      * @return Role
      */
     public function getRole($name);
+
+    /**
+     * @param Item $subject
+     * @param Role $role
+     * @param Item $object
+     * @return mixed
+     */
+    public function getRoleItem(Item $subject, Role $role, Item $object);
 
     /**
      * @param Item   $subject
@@ -19,7 +27,7 @@ interface Repository
      * @param Item   $object
      * @return mixed
      */
-    public function getRoleItem(Item $subject, $name, Item $object);
+    public function getRoleItemByName(Item $subject, $name, Item $object);
 
     /**
      * @param Item $subject
@@ -117,6 +125,24 @@ interface Repository
      * @return bool
      */
     public function hasRoleByName(Item $subject, $name, Item $object);
+
+    /**
+     * @param Item $subject
+     * @param Role $role
+     * @param Item $object
+     * @return void
+     */
+    public function removeRole(Item $subject, Role $role, Item $object);
+
+    /**
+     * @param Item   $subject
+     * @param string $name
+     * @param Item   $object
+     * @return void
+     *
+     * @throws NullPointerException
+     */
+    public function removeRoleByName(Item $subject, $name, Item $object);
 
     /**
      * @param string $type subject's class
