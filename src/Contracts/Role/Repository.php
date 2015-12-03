@@ -117,4 +117,20 @@ interface Repository
      * @return bool
      */
     public function hasRoleByName(Item $subject, $name, Item $object);
+
+    /**
+     * @param string $type subject's class
+     * @param Item   $object
+     * @param bool   $withTrashed
+     * @return mixed
+     */
+    public function getSubjectItems($type, Item $object, $withTrashed = false);
+
+    /**
+     * @param Item   $subject
+     * @param string $type object's class
+     * @param bool   $withTrashed
+     * @return mixed
+     */
+    public function getObjectItems(Item $subject, $type, $withTrashed = false);
 }

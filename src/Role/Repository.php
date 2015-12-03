@@ -198,4 +198,42 @@ class Repository implements Contract
 
         return false;
     }
+
+    public function getSubjectItems($type, Item $object, $withTrashed = false)
+    {
+        // TODO: Implement getSubjectItems() method.
+        $subject = new $type;
+        $builder = $subject->query()
+            ->from(DB::raw('`'.$subject->getTable().'` s'))
+            ->join(DB::raw('`'.with(new RoleItem)->getTable().'` ro'), 's.id', '=', 'ro.subject_id')
+            ->where('ro.subject_type', $subject->getType())
+            ->where('ro.object_type', $object->getType())
+            ->where('ro.object_id', $object->getId());
+
+        if (!$withTrashed) {
+            $builder->whereNull('s.deleted_at')
+                    ->withTrashed();
+        }
+
+        return $builder->get(['s.*']);
+    }
+
+    public function getObjectItems(Item $subject, $type, $withTrashed = false)
+    {
+        // TODO: Implement getObjectItems() method.
+        $object  = new $type;
+        $builder = $object->query()
+            ->from(DB::raw('`'.$object->getTable().'` o'))
+            ->join(DB::raw('`'.with(new RoleItem)->getTable().'` ro'), 'o.id', '=', 'ro.object_id')
+            ->where('ro.object_type', $object->getType())
+            ->where('ro.subject_type', $subject->getType())
+            ->where('ro.subject_id', $subject->getId());
+
+        if (!$withTrashed) {
+            $builder->whereNull('o.deleted_at')
+                    ->withTrashed();
+        }
+
+        return $builder->get(['o.*']);
+    }
 }
