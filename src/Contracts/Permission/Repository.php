@@ -55,4 +55,20 @@ interface Repository
      * @throws NullPointerException
      */
     public function assignPermissionByName(Item $subject, $name, Item $object);
+
+    /**
+     * @param Item       $subject
+     * @param Permission $permission
+     * @param Item       $object
+     * @return bool
+     */
+    public function hasPermission(Item $subject, Permission $permission, Item $object);
+
+    /**
+     * @param Item   $subject
+     * @param string $name
+     * @param Item   $object
+     * @return bool
+     */
+    public function hasPermissionByName(Item $subject, $name, Item $object);
 }

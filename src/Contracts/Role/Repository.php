@@ -101,4 +101,20 @@ interface Repository
      * @throws NullPointerException
      */
     public function assignRoleByName(Item $subject, $name, Item $object);
+
+    /**
+     * @param Item $subject
+     * @param Role $role
+     * @param Item $object
+     * @return bool
+     */
+    public function hasRole(Item $subject, Role $role, Item $object);
+
+    /**
+     * @param Item   $subject
+     * @param string $name
+     * @param Item   $object
+     * @return bool
+     */
+    public function hasRoleByName(Item $subject, $name, Item $object);
 }

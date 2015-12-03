@@ -59,6 +59,8 @@ class Repository implements Contract
             ->where('ri.subject_id', $subject->getId())
             ->where('ri.object_type', $object->getType())
             ->where('ri.object_id', $object->getId())
+            ->whereNull('r.deleted_at')
+            ->withTrashed()
             ->get(['r.*']);
     }
 
@@ -69,6 +71,8 @@ class Repository implements Contract
             ->from(DB::raw('`'.$this->permission->getTable().'` p'))
             ->join(DB::raw('`'.with(new RolePermission)->getTable().'` rp'), 'p.id', '=', 'rp.permission_id')
             ->where('rp.role_id', $role->getId())
+            ->whereNull('p.deleted_at')
+            ->withTrashed()
             ->get(['p.*']);
     }
 
@@ -153,13 +157,15 @@ class Repository implements Contract
 
     public function assignRole(Item $subject, RoleContract $role, Item $object)
     {
-        RoleItem::create([
-            'subject_type' => $subject->getType(),
-            'subject_id'   => $subject->getId(),
-            'role_id'      => $role->getId(),
-            'object_type'  => $object->getType(),
-            'object_id'    => $object->getId()
-        ]);
+        if (!$this->hasRole($subject, $role, $object)) {
+            RoleItem::create([
+                'subject_type' => $subject->getType(),
+                'subject_id'   => $subject->getId(),
+                'role_id'      => $role->getId(),
+                'object_type'  => $object->getType(),
+                'object_id'    => $object->getId()
+            ]);
+        }
     }
 
     public function assignRoleByName(Item $subject, $name, Item $object)
@@ -169,5 +175,27 @@ class Repository implements Contract
             throw new NullPointerException('Unable to find appropriate role');
         }
         return $this->assignRole($subject, $role, $object);
+    }
+
+    public function hasRole(Item $subject, RoleContract $role, Item $object)
+    {
+        // TODO: Implement hasRole() method.
+        return RoleItem::where('subject_type', $subject->getType())
+            ->where('subject_id', $subject->getId())
+            ->where('object_type', $object->getType())
+            ->where('object_id', $object->getId())
+            ->where('role_id', $role->getId())
+            ->first() ? true : false;
+    }
+
+    public function hasRoleByName(Item $subject, $name, Item $object)
+    {
+        // TODO: Implement hasRoleByName() method.
+        $role = $this->getRole($name);
+        if ($role) {
+            return $this->hasRole($subject, $role, $object);
+        }
+
+        return false;
     }
 }

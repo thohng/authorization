@@ -81,4 +81,26 @@ class Repository implements Contract
         }
         return $this->assignPermission($subject, $permission, $object);
     }
+
+    public function hasPermission(Item $subject, PermissionContract $permission, Item $object)
+    {
+        // TODO: Implement hasPermission() method.
+        return PermissionItem::where('permission_id', $permission->getId())
+            ->where('subject_type', $subject->getType())
+            ->where('subject_id', $subject->getId())
+            ->where('object_type', $object->getType())
+            ->where('object_id', $object->getId())
+            ->first() ? true : false;
+    }
+
+    public function hasPermissionByName(Item $subject, $name, Item $object)
+    {
+        // TODO: Implement hasPermissionByName() method.
+        $permission = $this->getPermission($name);
+        if ($permission) {
+            return $this->hasPermission($subject, $permission, $object);
+        }
+
+        return false;
+    }
 }
