@@ -28,14 +28,14 @@ class Guard implements Contract
     public function hasPermissionTo(Item $subject, $action, Item $object)
     {
         // TODO: Implement hasPermissionTo() method.
-        if ($this->permission->getPermissionItem($subject, $action, $object)) {
+        if ($this->permission->getPermissionItemByName($subject, $action, $object)) {
             return true;
         }
 
         foreach ($this->role->getSubjectRoles($subject, $object) as $role) {
             foreach ($this->role->getPermissions($role) as $permission) {
                 if ($permission instanceof Permission
-                    && $this->permission->getPermissionItem($subject, $permission->getName(), $object)) {
+                    && $this->permission->getPermissionItem($subject, $permission, $object)) {
                     return true;
                 }
             }
