@@ -61,4 +61,24 @@ class Repository implements Contract
 
         return $query->get();
     }
+
+    public function assignPermission(Item $subject, PermissionContract $permission, Item $object)
+    {
+        PermissionItem::create([
+            'subject_type' => $subject->getType(),
+            'subject_id'   => $subject->getId(),
+            'role_id'      => $permission->getId(),
+            'object_type'  => $object->getType(),
+            'object_id'    => $object->getId()
+        ]);
+    }
+
+    public function assignPermissionByName(Item $subject, $name, Item $object)
+    {
+        $permission = $this->getPermission($name);
+        if (is_null($permission)) {
+            throw new NullPointerException('Unable to find appropriate permission');
+        }
+        return $this->assignPermission($subject, $permission, $object);
+    }
 }

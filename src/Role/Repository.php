@@ -150,4 +150,24 @@ class Repository implements Contract
             ->withTrashed()
             ->get(['r.*']);
     }
+
+    public function assignRole(Item $subject, RoleContract $role, Item $object)
+    {
+        RoleItem::create([
+            'subject_type' => $subject->getType(),
+            'subject_id'   => $subject->getId(),
+            'role_id'      => $role->getId(),
+            'object_type'  => $object->getType(),
+            'object_id'    => $object->getId()
+        ]);
+    }
+
+    public function assignRoleByName(Item $subject, $name, Item $object)
+    {
+        $role = $this->getRole($name);
+        if (is_null($role)) {
+            throw new NullPointerException('Unable to find appropriate role');
+        }
+        return $this->assignRole($subject, $role, $object);
+    }
 }

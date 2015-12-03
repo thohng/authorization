@@ -1,7 +1,8 @@
 <?php namespace TechExim\Auth\Contracts\Permission;
 
-use TechExim\Auth\Contracts\Permission;
 use TechExim\Auth\Contracts\Item;
+use TechExim\Auth\Contracts\Permission;
+use TechExim\Auth\Exception\NullPointerException;
 
 interface Repository
 {
@@ -36,4 +37,22 @@ interface Repository
      * @return mixed
      */
     public function getPermissions($names = []);
+
+    /**
+     * @param Item       $subject
+     * @param Permission $permission
+     * @param Item       $object
+     * @return void
+     */
+    public function assignPermission(Item $subject, Permission $permission, Item $object);
+
+    /**
+     * @param Item   $subject
+     * @param string $name
+     * @param Item   $object
+     * @return void
+     *
+     * @throws NullPointerException
+     */
+    public function assignPermissionByName(Item $subject, $name, Item $object);
 }

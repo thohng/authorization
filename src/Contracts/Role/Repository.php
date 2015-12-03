@@ -3,6 +3,7 @@
 use TechExim\Auth\Contracts\Item;
 use TechExim\Auth\Contracts\Role;
 use TechExim\Auth\Contracts\Permission;
+use TechExim\Auth\Exception\NullPointerException;
 
 interface Repository
 {
@@ -77,9 +78,27 @@ interface Repository
 
     /**
      * Get all object's roles
-     * 
+     *
      * @param Item $object
      * @return mixed
      */
     public function getObjectRoles(Item $object);
+
+    /**
+     * @param Item $subject
+     * @param Role $role
+     * @param Item $object
+     * @return void
+     */
+    public function assignRole(Item $subject, Role $role, Item $object);
+
+    /**
+     * @param Item   $subject
+     * @param string $name
+     * @param Item   $object
+     * @return void
+     *
+     * @throws NullPointerException
+     */
+    public function assignRoleByName(Item $subject, $name, Item $object);
 }
