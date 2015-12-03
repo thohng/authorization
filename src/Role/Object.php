@@ -1,18 +1,11 @@
 <?php namespace TechExim\Auth\Role;
 
-use Illuminate\Database\Eloquent\Model;
+use TechExim\Auth\Model;
 
 class Object extends Model
 {
-    /**
-     * The attributes that aren't mass assignable.
-     *
-     * @var array
-     */
-    protected $guarded = [];
-
     public function getTable()
     {
-        return config('authorization.role.object');
+        return config('authorization.role.object', 'auth_role_objects');
     }
 }
