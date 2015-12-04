@@ -1,9 +1,12 @@
 <?php namespace TechExim\Auth\Role;
 
 use TechExim\Auth\Model;
+use TechExim\Auth\Support\HasMultipleKeys;
 
 class Item extends Model
 {
+    use HasMultipleKeys;
+
     /**
      * The primary keys for the model.
      *
@@ -23,6 +26,8 @@ class Item extends Model
      * @var bool
      */
     public $incrementing = false;
+
+    protected static $useSoftDeletes = false;
 
     public function getTable()
     {
