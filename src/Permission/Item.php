@@ -6,7 +6,7 @@ use TechExim\Auth\Support\HasMultipleKeys;
 class Item extends Model
 {
     use HasMultipleKeys;
-    
+
     /**
      * The primary keys for the model.
      *

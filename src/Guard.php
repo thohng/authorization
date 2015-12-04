@@ -35,7 +35,7 @@ class Guard implements Contract
         foreach ($this->role->getSubjectRoles($subject, $object) as $role) {
             foreach ($this->role->getPermissions($role) as $permission) {
                 if ($permission instanceof Permission
-                    && $this->permission->getPermissionItem($subject, $permission, $object)) {
+                    && $permission->getName() === $action) {
                     return true;
                 }
             }
