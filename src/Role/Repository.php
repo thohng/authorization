@@ -2,7 +2,7 @@
 
 use TechExim\Auth\Contracts\Role\Repository as Contract;
 use TechExim\Auth\Contracts\Item;
-use TechExim\Auth\Exception\NullPointerException;
+use TechExim\Exception\NullPointerException;
 use TechExim\Auth\Role\Item as RoleItem;
 use TechExim\Auth\Role\Object as RoleObject;
 use TechExim\Auth\Role\Permission as RolePermission;

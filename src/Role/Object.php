@@ -1,7 +1,7 @@
 <?php namespace TechExim\Auth\Role;
 
 use TechExim\Auth\Model;
-use TechExim\Auth\Support\HasMultipleKeys;
+use TechExim\Support\HasMultipleKeys;
 
 class Object extends Model
 {

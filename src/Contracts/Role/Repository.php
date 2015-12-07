@@ -3,7 +3,7 @@
 use TechExim\Auth\Contracts\Item;
 use TechExim\Auth\Contracts\Role;
 use TechExim\Auth\Contracts\Permission;
-use TechExim\Auth\Exception\NullPointerException;
+use TechExim\Exception\NullPointerException;
 
 interface Repository
 {

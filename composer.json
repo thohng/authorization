@@ -1,6 +1,6 @@
 {
     "name": "techexim/authorization",
-    "description": "Roles based Authorization Scheme",
+    "description": "Roles & Permissions Authorization Scheme",
     "license": "MIT",
     "authors": [
         {
@@ -9,14 +9,12 @@
         }
     ],
     "require": {
-        "php": ">=5.5.9",
-        "laravel/framework": "5.1.*",
-        "phpunit/phpunit": "^5.0"
+        "techexim/laravel": "~1.0"
     },
     "autoload": {
         "psr-4": {
-            "TechExim\\Auth\\": "src",
-            "TechExim\\Auth\\Tests\\": "tests"
+            "Auth\\": "src",
+            "Auth\\Tests\\": "tests"
         }
     },
     "extra": {
@@ -24,10 +22,5 @@
             "dev-master": "1.0.0-dev"
         }
     },
-    "minimum-stability": "dev",
-    "require-dev": {
-        "fzaninotto/faker": "^1.5",
-        "mockery/mockery": "^0.9.4",
-        "phpspec/phpspec": "^2.4"
-    }
+    "minimum-stability": "stable"
 }

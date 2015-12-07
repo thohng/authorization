@@ -1,7 +1,7 @@
 <?php namespace TechExim\Auth;
 
 use Illuminate\Database\Eloquent\Model as Eloquent;
-use TechExim\Auth\Support\HasSoftDeletes;
+use TechExim\Support\HasSoftDeletes;
 
 abstract class Model extends Eloquent
 {
