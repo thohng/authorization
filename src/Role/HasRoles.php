@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Eloquent\Collection;
 use TechExim\Auth\Contracts\Role\Repository as RoleRepository;
-use TechExim\Auth\Contracts\Role;
+use TechExim\Auth\Contracts\Role as RoleContract;
 
 trait HasRoles
 {
@@ -23,13 +23,13 @@ trait HasRoles
     }
 
     /**
-     * @param Role $role
+     * @param RoleContract $role
      * @return bool
      */
-    public function hasRole(Role $role)
+    public function hasRole(RoleContract $role)
     {
         foreach ($this->getRoles() as $objectRole) {
-            if ($objectRole instanceof Role && $objectRole->getId() === $role->getId()) {
+            if ($objectRole instanceof RoleContract && $objectRole->getId() === $role->getId()) {
                 return true;
             }
         }
@@ -58,7 +58,7 @@ trait HasRoles
     public function hasRoles(Collection $roles)
     {
         foreach ($roles as $role) {
-            if ($role instanceof Role && $this->hasRole($role)) {
+            if ($role instanceof RoleContract && $this->hasRole($role)) {
                 return true;
             }
         }
