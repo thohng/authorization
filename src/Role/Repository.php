@@ -149,6 +149,30 @@ class Repository implements Contract
             ->get(['r.*']);
     }
 
+    public function hasObjectRole(Item $object, RoleContract $role)
+    {
+        $roles = $this->getObjectRoles($object);
+        foreach ($roles as $item) {
+            if ($item instanceof RoleContract && $item->getId() === $role->getId()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function hasObjectRoleByName(Item $object, $name)
+    {
+        $roles = $this->getObjectRoles($object);
+        foreach ($roles as $item) {
+            if ($item instanceof RoleContract && $item->getName() === $name) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function assignRole(Item $subject, RoleContract $role, Item $object)
     {
         if (!$this->hasRole($subject, $role, $object)) {

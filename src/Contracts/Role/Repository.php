@@ -159,4 +159,18 @@ interface Repository
      * @return mixed
      */
     public function getObjectItems(Item $subject, $type, $withTrashed = false);
+
+    /**
+     * @param Item $object
+     * @param Role $role
+     * @return bool
+     */
+    public function hasObjectRole(Item $object, Role $role);
+
+    /**
+     * @param Item   $object
+     * @param string $name
+     * @return bool
+     */
+    public function hasObjectRoleByName(Item $object, $name);
 }
