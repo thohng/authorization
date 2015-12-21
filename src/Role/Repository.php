@@ -39,8 +39,11 @@ class Repository implements Contract
     public function create($name)
     {
         // TODO: Implement create() method.
-        if (!$this->getRole($name)) {
+        $role = $this->getRole($name);
+        if (!$role) {
             return Role::create(['name' => $name]);
+        } else {
+            return $role;
         }
     }
 

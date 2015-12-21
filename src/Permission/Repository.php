@@ -34,8 +34,11 @@ class Repository implements Contract
     public function create($name)
     {
         // TODO: Implement create() method.
-        if (!$this->getPermission($name)) {
+        $permission = $this->getPermission($name);
+        if (!$permission) {
             return Permission::create(['name' => $name]);
+        } else {
+            return $permission;
         }
     }
 
