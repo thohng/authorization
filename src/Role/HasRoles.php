@@ -19,7 +19,7 @@ trait HasRoles
      */
     public function getRoles()
     {
-        return $this->getRoleRepository()->getObjectRoles($this);
+        return $this->getRoleRepository()->getItemRoles($this);
     }
 
     /**
