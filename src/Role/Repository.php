@@ -1,37 +1,63 @@
 <?php namespace TechExim\Auth\Role;
 
+use DB;
+use Illuminate\Support\Facades\Event;
 use TechExim\Auth\Contracts\Role\Repository as Contract;
-use TechExim\Auth\Contracts\Item;
-use TechExim\Exception\NullPointerException;
-use TechExim\Auth\Role\Item as RoleItem;
-use TechExim\Auth\Role\Object as RoleObject;
-use TechExim\Auth\Role\Permission as RolePermission;
+use TechExim\Auth\Contracts\Item as ItemContract;
 use TechExim\Auth\Contracts\Role as RoleContract;
 use TechExim\Auth\Contracts\Permission as PermissionContract;
-use DB;
+use TechExim\Auth\Events\RoleWasDeleted;
+use TechExim\Auth\Model;
+use TechExim\Exception\NullPointerException;
 
 class Repository implements Contract
 {
     /**
-     * @var RoleContract
+     * @return string
      */
-    protected $role;
+    private function getRoleTable()
+    {
+        return app(Role::class)->getTable();
+    }
 
     /**
-     * @var PermissionContract
+     * @return string
      */
-    protected $permission;
-
-    public function __construct(RoleContract $role, PermissionContract $permission)
+    private function getRoleItemTable()
     {
-        $this->role = $role;
-        $this->permission = $permission;
+        return app(Item::class)->getTable();
+    }
+
+    /**
+     * @return string
+     */
+    private function getRoleObjectTable()
+    {
+        return app(Object::class)->getTable();
+    }
+
+    public function create($name)
+    {
+        // TODO: Implement create() method.
+        if (!$this->getRole($name)) {
+            return Role::create(['name' => $name]);
+        }
+    }
+
+    public function delete(RoleContract $role)
+    {
+        // TODO: Implement delete() method.
+        if ($role instanceof Model) {
+            $role->delete();
+
+            Event::fire(new RoleWasDeleted($role));
+        }
     }
 
     public function getRole($name)
     {
         // TODO: Implement getRole() method.
-        $builder = $this->role->query();
+        $builder = Role::query();
 
         $id = (int) $name;
         if (is_int($id) && $id) {
@@ -43,245 +69,222 @@ class Repository implements Contract
         return $builder->first();
     }
 
-    public function getSubjectRoles(Item $subject, Item $object)
-    {
-        // TODO: Implement getSubjectRoles() method.
-        return $this->role->query()
-            ->from(DB::raw('`'.$this->role->getTable().'` r'))
-            ->join(DB::raw('`'.with(new RoleItem)->getTable().'` ri'), 'r.id', '=', 'ri.role_id')
-            ->where('ri.subject_type', $subject->getType())
-            ->where('ri.subject_id', $subject->getId())
-            ->where('ri.object_type', $object->getType())
-            ->where('ri.object_id', $object->getId())
-            ->whereNull('r.deleted_at')
-            ->withTrashed()
-            ->get(['r.*']);
-    }
-
-    public function getPermissions(RoleContract $role)
-    {
-        // TODO: Implement getPermissions() method.
-        return $this->permission->query()
-            ->from(DB::raw('`'.$this->permission->getTable().'` p'))
-            ->join(DB::raw('`'.with(new RolePermission)->getTable().'` rp'), 'p.id', '=', 'rp.permission_id')
-            ->where('rp.role_id', $role->getId())
-            ->whereNull('p.deleted_at')
-            ->withTrashed()
-            ->get(['p.*']);
-    }
-
-    public function create($name)
-    {
-        // TODO: Implement create() method.
-        if (!$this->getRole($name)) {
-            return $this->role->create(['name' => $name]);
-        }
-    }
-
-    public function remove(RoleContract $role)
-    {
-        // TODO: Implement remove() method.
-        foreach ($this->getPermissions($role) as $permission) {
-            $permission->delete();
-        }
-
-        $role->delete();
-    }
-
-    public function getRoles($names = [])
+    public function getRoles(array $names = [])
     {
         // TODO: Implement getRoles() method.
-        $query = $this->role->query();
+        $builder = Role::query();
         if (count($names)) {
-            $query->whereIn('name', $names);
+            $builder->whereIn('name', $names);
         }
 
-        return $query->get();
+        return $builder->get();
     }
 
-    public function assignPermission(RoleContract $role, PermissionContract $permission)
+    public function getItemRoles(ItemContract $item)
     {
-        // TODO: Implement assignPermission() method.
-        if (!RolePermission::where('permission_id', $permission->getId())
+        // TODO: Implement getItemRoles() method.
+        return Role::where('item_type', $item->getType())
+            ->where('item_id', $item->getId())
+            ->get();
+    }
+
+    public function hasItemRole(ItemContract $item, RoleContract $role)
+    {
+        // TODO: Implement hasItemRole() method.
+        return Item::where('item_type', $item->getType())
+            ->where('item_id', $item->getId())
             ->where('role_id', $role->getId())
-            ->first()) {
-            RolePermission::create([
-                'permission_id' => $permission->getId(),
-                'role_id' => $role->getId()
+            ->first() ? true : false;
+    }
+
+    public function hasItemRoleName(ItemContract $item, $name)
+    {
+        // TODO: Implement hasItemRoleName() method.
+        $role = $this->getRole($name);
+
+        return $role ? $this->hasItemRole($item, $role) : false;
+    }
+
+    public function assignItemRole(ItemContract $item, RoleContract $role)
+    {
+        // TODO: Implement assignItemRole() method.
+        if (!$this->hasItemRole($item, $role)) {
+            Item::insert([
+                'item_type' => $item->getType(),
+                'item_id'   => $item->getId(),
+                'role_id'   => $role->getId()
             ]);
         }
     }
 
-    public function assignObject(RoleContract $role, Item $object)
+    public function assignItemRoleName(ItemContract $item, $name)
     {
-        // TODO: Implement assignObject() method.
-        if (!RoleObject::where('object_type', $object->getType())
-            ->where('object_id', $object->getId())
-            ->where('role_id', $role->getId())
-            ->first()) {
-            RoleObject::create([
-                'object_type' => $object->getType(),
-                'object_id' => $object->getId(),
-                'role_id' => $role->getId()
-            ]);
-        }
-    }
-
-    public function assignObjectByName($name, Item $object)
-    {
-        // TODO: Implement assignObjectByName() method.
+        // TODO: Implement assignItemRoleName() method.
         $role = $this->getRole($name);
         if ($role) {
-            $this->assignObject($role, $object);
+            $this->assignItemRole($item, $role);
+        } else {
+            throw new NullPointerException("Role $name could not be found.");
         }
     }
 
-    public function getObjectRoles(Item $object)
+    public function removeItemRole(ItemContract $item, RoleContract $role)
+    {
+        // TODO: Implement removeItemRole() method.
+        if ($this->hasItemRole($item, $role)) {
+            Item::where('item_type', $item->getType())
+                ->where('item_id', $item->getId())
+                ->where('role_id', $role->getId())
+                ->delete();
+        }
+    }
+
+    public function removeItemRoleName(ItemContract $item, $name)
+    {
+        // TODO: Implement removeItemRoleName() method.
+        $role = $this->getRole($name);
+        if ($role) {
+            $this->removeItemRole($item, $role);
+        } else {
+            throw new NullPointerException("Role $name could not be found.");
+        }
+    }
+
+    public function getObjectRoles(ItemContract $subject, ItemContract $object)
     {
         // TODO: Implement getObjectRoles() method.
-        return $this->role->query()
-            ->from(DB::raw('`'.$this->role->getTable().'` r'))
-            ->join(DB::raw('`'.with(new RoleObject)->getTable().'` ro'), 'r.id', '=', 'ro.role_id')
-            ->where('ro.object_type', $object->getType())
-            ->where('ro.object_id', $object->getId())
-            ->whereNull('r.deleted_at')
-            ->withTrashed()
-            ->get(['r.*']);
+        $rt = $this->getRoleTable();
+        $ot = $this->getRoleObjectTable();
+
+        return Role::query()
+            ->join($ot, "$ot.role_id", '=', "rt.id")
+            ->where("$ot.subject_type", $subject->getType())
+            ->where("$ot.subject_id", $subject->getId())
+            ->where("$ot.object_type", $object->getType())
+            ->where("$ot.object_id", $object->getId())
+            ->get();
     }
 
-    public function hasObjectRole(Item $object, RoleContract $role)
+    public function getSubjectItems($type, ItemContract $object, $withTrashed = false)
     {
-        $roles = $this->getObjectRoles($object);
-        foreach ($roles as $item) {
-            if ($item instanceof RoleContract && $item->getId() === $role->getId()) {
-                return true;
+        // TODO: Implement getSubjectItems() method.
+        $subject = app($type);
+        if ($subject instanceof ItemContract) {
+            $ot = $this->getRoleObjectTable();
+            $st = $subject->getTable();
+
+            $builder = $subject->query()
+                ->join($ot, "$ot.subject_id", '=', "$st.id")
+                ->where("$ot.subject_type", $subject->getType())
+                ->where("$ot.object_type", $object->getType())
+                ->where("$ot.object_id", $object->getId());
+
+            if (!$withTrashed) {
+                $builder->whereNull("$st.deleted_at")
+                    ->withTrashed();
             }
-        }
 
-        return false;
-    }
-
-    public function hasObjectRoleByName(Item $object, $name)
-    {
-        $roles = $this->getObjectRoles($object);
-        foreach ($roles as $item) {
-            if ($item instanceof RoleContract && $item->getName() === $name) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public function assignRole(Item $subject, RoleContract $role, Item $object)
-    {
-        if (!$this->hasRole($subject, $role, $object)) {
-            RoleItem::create([
-                'subject_type' => $subject->getType(),
-                'subject_id'   => $subject->getId(),
-                'role_id'      => $role->getId(),
-                'object_type'  => $object->getType(),
-                'object_id'    => $object->getId()
+            return $builder->get([
+                "$st.*",
+                "$ot.role_id"
             ]);
         }
     }
 
-    public function assignRoleByName(Item $subject, $name, Item $object)
-    {
-        $role = $this->getRole($name);
-        if (is_null($role)) {
-            throw new NullPointerException('Unable to find appropriate role');
-        }
-        return $this->assignRole($subject, $role, $object);
-    }
-
-    public function hasRole(Item $subject, RoleContract $role, Item $object)
-    {
-        // TODO: Implement hasRole() method.
-        return $this->getRoleItem($subject, $role, $object) ? true : false;
-    }
-
-    public function hasRoleByName(Item $subject, $name, Item $object)
-    {
-        // TODO: Implement hasRoleByName() method.
-        return $this->getRoleItemByName($subject, $name, $object) ? true : false;
-    }
-
-    public function getSubjectItems($type, Item $object, $withTrashed = false)
-    {
-        // TODO: Implement getSubjectItems() method.
-        $subject = new $type;
-        $builder = $subject->query()
-            ->from(DB::raw('`'.$subject->getTable().'` s'))
-            ->join(DB::raw('`'.with(new RoleItem)->getTable().'` ro'), 's.id', '=', 'ro.subject_id')
-            ->where('ro.subject_type', $subject->getType())
-            ->where('ro.object_type', $object->getType())
-            ->where('ro.object_id', $object->getId());
-
-        if (!$withTrashed) {
-            $builder->whereNull('s.deleted_at')
-                    ->withTrashed();
-        }
-
-        return $builder->get(['s.*', 'ro.role_id']);
-    }
-
-    public function getObjectItems(Item $subject, $type, $withTrashed = false)
+    public function getObjectItems(ItemContract $subject, $type, $withTrashed = false)
     {
         // TODO: Implement getObjectItems() method.
-        $object  = new $type;
-        $builder = $object->query()
-            ->from(DB::raw('`'.$object->getTable().'` o'))
-            ->join(DB::raw('`'.with(new RoleItem)->getTable().'` ro'), 'o.id', '=', 'ro.object_id')
-            ->where('ro.object_type', $object->getType())
-            ->where('ro.subject_type', $subject->getType())
-            ->where('ro.subject_id', $subject->getId());
+        $object = app($type);
+        if ($object instanceof ItemContract) {
+            $ot = $this->getRoleObjectTable();
+            $st = $object->getTable();
 
-        if (!$withTrashed) {
-            $builder->whereNull('o.deleted_at')
+            $builder = $object->query()
+                ->join($ot, "$ot.object_id", '=', "$st.id")
+                ->where("$ot.object_type", $object->getType())
+                ->where("$ot.subject_type", $subject->getType())
+                ->where("$ot.subject_id", $subject->getId());
+
+            if (!$withTrashed) {
+                $builder->whereNull("$st.deleted_at")
                     ->withTrashed();
-        }
+            }
 
-        return $builder->get(['o.*', 'ro.role_id']);
+            return $builder->get([
+                "$st.*",
+                "$ot.role_id"
+            ]);
+        }
     }
 
-    public function getRoleItem(Item $subject, RoleContract $role, Item $object)
+    public function hasObjectRole(ItemContract $subject, RoleContract $role, ItemContract $object)
     {
-        // TODO: Implement getRoleItem() method.
-        return RoleItem::where('role_id', $role->getId())
-            ->where('subject_type', $subject->getType())
+        // TODO: Implement hasObjectRole() method.
+        return Object::where('subject_type', $subject->getType())
             ->where('subject_id', $subject->getId())
             ->where('object_type', $object->getType())
             ->where('object_id', $object->getId())
-            ->first();
+            ->where('role_id', $role->getId())
+            ->first() ? true : false;
     }
 
-    public function getRoleItemByName(Item $subject, $name, Item $object)
+    public function hasObjectRoleName(ItemContract $subject, $name, ItemContract $object)
     {
-        // TODO: Implement getRoleItemByName() method.
+        // TODO: Implement hasObjectRoleName() method.
         $role = $this->getRole($name);
         if ($role) {
-            return $this->getRoleItem($subject, $role, $object);
+            return $this->hasObjectRole($subject, $role, $object);
         } else {
-            throw new NullPointerException('Specified role is invalid');
+            throw new NullPointerException("Role $name could not be found.");
         }
     }
 
-    public function removeRole(Item $subject, RoleContract $role, Item $object)
+    public function assignObjectRole(ItemContract $subject, RoleContract $role, ItemContract $object)
     {
-        // TODO: Implement removeRole() method.
-        $roleItem = $this->getRoleItem($subject, $role, $object);
-        if ($roleItem) {
-            $roleItem->delete();
+        // TODO: Implement assignObjectRole() method.
+        if (!$this->hasObjectRole($subject, $role, $object)) {
+            Object::insert([
+                'subject_type' => $subject->getType(),
+                'subject_id'   => $subject->getId(),
+                'object_type'  => $object->getType(),
+                'object_id'    => $object->getId(),
+                'role_id'      => $role->getId()
+            ]);
         }
     }
 
-    public function removeRoleByName(Item $subject, $name, Item $object)
+    public function assignObjectRoleName(ItemContract $subject, $name, ItemContract $object)
     {
-        // TODO: Implement removeRoleByName() method.
-        $roleItem = $this->getRoleItemByName($subject, $name, $object);
-        if ($roleItem) {
-            $roleItem->delete();
+        // TODO: Implement assignObjectRoleName() method.
+        $role = $this->getRole($name);
+        if ($role) {
+            $this->assignObjectRole($subject, $role, $object);
+        } else {
+            throw new NullPointerException("Role $name could not be found.");
+        }
+    }
+
+    public function removeObjectRole(ItemContract $subject, RoleContract $role, ItemContract $object)
+    {
+        // TODO: Implement removeObjectRole() method.
+        if (!$this->hasObjectRole($subject, $role, $object)) {
+            Object::where('subject_type', $subject->getType())
+                ->where('subject_id', $subject->getId())
+                ->where('object_type', $object->getType())
+                ->where('object_id', $object->getId())
+                ->where('role_id', $role->getId())
+                ->delete();
+        }
+    }
+
+    public function removeObjectRoleName(ItemContract $subject, $name, ItemContract $object)
+    {
+        // TODO: Implement removeObjectRoleName() method.
+        $role = $this->getRole($name);
+        if ($role) {
+            $this->removeObjectRole($subject, $role, $object);
+        } else {
+            throw new NullPointerException("Role $name could not be found.");
         }
     }
 }

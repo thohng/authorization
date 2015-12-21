@@ -8,41 +8,6 @@ use TechExim\Exception\NullPointerException;
 interface Repository
 {
     /**
-     * @param int|string $name
-     * @return Role
-     */
-    public function getRole($name);
-
-    /**
-     * @param Item $subject
-     * @param Role $role
-     * @param Item $object
-     * @return mixed
-     */
-    public function getRoleItem(Item $subject, Role $role, Item $object);
-
-    /**
-     * @param Item   $subject
-     * @param string $name
-     * @param Item   $object
-     * @return mixed
-     */
-    public function getRoleItemByName(Item $subject, $name, Item $object);
-
-    /**
-     * @param Item $subject
-     * @param Item $object
-     * @return mixed
-     */
-    public function getSubjectRoles(Item $subject, Item $object);
-
-    /**
-     * @param Role $role
-     * @return mixed
-     */
-    public function getPermissions(Role $role);
-
-    /**
      * @param $name
      * @return Role
      */
@@ -52,97 +17,78 @@ interface Repository
      * @param Role $role
      * @return void
      */
-    public function remove(Role $role);
+    public function delete(Role $role);
+
+    /**
+     * @param int|string $name
+     * @return Role
+     */
+    public function getRole($name);
 
     /**
      * @param array $names
-     * @return mixed
+     * @return Role[]
      */
-    public function getRoles($names = []);
+    public function getRoles(array $names = []);
 
     /**
-     * @param Role       $role
-     * @param Permission $permission
-     * @return mixed
+     * @param Item $item
+     * @return Role[]
      */
-    public function assignPermission(Role $role, Permission $permission);
+    public function getItemRoles(Item $item);
 
     /**
-     * Assign a role to an object
-     *
+     * @param Item $item
      * @param Role $role
-     * @param Item $object
-     * @return mixed
+     * @return bool
      */
-    public function assignObject(Role $role, Item $object);
+    public function hasItemRole(Item $item, Role $role);
 
     /**
-     * Assign a name (role) to an object
-     * @param      $name
-     * @param Item $object
-     * @return mixed
+     * @param Item   $item
+     * @param string $name
+     * @return bool
      */
-    public function assignObjectByName($name, Item $object);
+    public function hasItemRoleName(Item $item, $name);
 
     /**
-     * Get all object's roles
-     *
-     * @param Item $object
-     * @return mixed
-     */
-    public function getObjectRoles(Item $object);
-
-    /**
-     * @param Item $subject
+     * @param Item $item
      * @param Role $role
-     * @param Item $object
      * @return void
      */
-    public function assignRole(Item $subject, Role $role, Item $object);
+    public function assignItemRole(Item $item, Role $role);
 
     /**
-     * @param Item   $subject
+     * @param Item   $item
      * @param string $name
-     * @param Item   $object
      * @return void
      *
      * @throws NullPointerException
      */
-    public function assignRoleByName(Item $subject, $name, Item $object);
+    public function assignItemRoleName(Item $item, $name);
 
     /**
-     * @param Item $subject
+     * @param Item $item
      * @param Role $role
-     * @param Item $object
-     * @return bool
-     */
-    public function hasRole(Item $subject, Role $role, Item $object);
-
-    /**
-     * @param Item   $subject
-     * @param string $name
-     * @param Item   $object
-     * @return bool
-     */
-    public function hasRoleByName(Item $subject, $name, Item $object);
-
-    /**
-     * @param Item $subject
-     * @param Role $role
-     * @param Item $object
      * @return void
      */
-    public function removeRole(Item $subject, Role $role, Item $object);
+    public function removeItemRole(Item $item, Role $role);
 
     /**
-     * @param Item   $subject
+     * @param Item   $item
      * @param string $name
-     * @param Item   $object
      * @return void
      *
      * @throws NullPointerException
      */
-    public function removeRoleByName(Item $subject, $name, Item $object);
+    public function removeItemRoleName(Item $item, $name);
+
+    /**
+     * @param Item $subject
+     * @param Item $object
+     * @return Role[]
+     */
+    public function getObjectRoles(Item $subject, Item $object);
 
     /**
      * @param string $type subject's class
@@ -161,16 +107,54 @@ interface Repository
     public function getObjectItems(Item $subject, $type, $withTrashed = false);
 
     /**
-     * @param Item $object
+     * @param Item $subject
      * @param Role $role
+     * @param Item $object
      * @return bool
      */
-    public function hasObjectRole(Item $object, Role $role);
+    public function hasObjectRole(Item $subject, Role $role, Item $object);
 
     /**
-     * @param Item   $object
+     * @param Item   $subject
      * @param string $name
+     * @param Item   $object
      * @return bool
      */
-    public function hasObjectRoleByName(Item $object, $name);
+    public function hasObjectRoleName(Item $subject, $name, Item $object);
+
+    /**
+     * @param Item $subject
+     * @param Role $role
+     * @param Item $object
+     * @return void
+     */
+    public function assignObjectRole(Item $subject, Role $role, Item $object);
+
+    /**
+     * @param Item   $subject
+     * @param string $name
+     * @param Item   $object
+     * @return void
+     *
+     * @throws NullPointerException
+     */
+    public function assignObjectRoleName(Item $subject, $name, Item $object);
+
+    /**
+     * @param Item $subject
+     * @param Role $role
+     * @param Item $object
+     * @return void
+     */
+    public function removeObjectRole(Item $subject, Role $role, Item $object);
+
+    /**
+     * @param Item   $subject
+     * @param string $name
+     * @param Item   $object
+     * @return void
+     *
+     * @throws NullPointerException
+     */
+    public function removeObjectRoleName(Item $subject, $name, Item $object);
 }

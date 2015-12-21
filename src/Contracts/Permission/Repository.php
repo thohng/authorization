@@ -7,12 +7,6 @@ use TechExim\Exception\NullPointerException;
 interface Repository
 {
     /**
-     * @param int|string $name
-     * @return Permission
-     */
-    public function getPermission($name);
-
-    /**
      * @param $name
      * @return Permission
      */
@@ -22,7 +16,13 @@ interface Repository
      * @param Permission $permission
      * @return void
      */
-    public function remove(Permission $permission);
+    public function delete(Permission $permission);
+
+    /**
+     * @param int|string $name
+     * @return Permission
+     */
+    public function getPermission($name);
 
     /**
      * @param array $names
@@ -31,12 +31,103 @@ interface Repository
     public function getPermissions($names = []);
 
     /**
-     * @param Item       $subject
+     * @param Item $item
+     * @return Permission[]
+     */
+    public function getItemPermissions(Item $item);
+
+    /**
+     * @param Item $item
      * @param Permission $permission
-     * @param Item       $object
+     * @return bool
+     */
+    public function hasItemPermission(Item $item, Permission $permission);
+
+    /**
+     * @param Item   $item
+     * @param string $name
+     * @return bool
+     */
+    public function hasItemPermissionName(Item $item, $name);
+
+    /**
+     * @param Item $item
+     * @param Permission $permission
      * @return void
      */
-    public function assignPermission(Item $subject, Permission $permission, Item $object);
+    public function assignItemPermission(Item $item, Permission $permission);
+
+    /**
+     * @param Item   $item
+     * @param string $name
+     * @return void
+     *
+     * @throws NullPointerException
+     */
+    public function assignItemPermissionName(Item $item, $name);
+
+    /**
+     * @param Item $item
+     * @param Permission $permission
+     * @return void
+     */
+    public function removeItemPermission(Item $item, Permission $permission);
+
+    /**
+     * @param Item   $item
+     * @param string $name
+     * @return void
+     *
+     * @throws NullPointerException
+     */
+    public function removeItemPermissionName(Item $item, $name);
+
+    /**
+     * @param Item $subject
+     * @param Item $object
+     * @return Permission[]
+     */
+    public function getObjectPermissions(Item $subject, Item $object);
+
+    /**
+     * @param string $type subject's class
+     * @param Item   $object
+     * @param bool   $withTrashed
+     * @return mixed
+     */
+    public function getSubjectItems($type, Item $object, $withTrashed = false);
+
+    /**
+     * @param Item   $subject
+     * @param string $type object's class
+     * @param bool   $withTrashed
+     * @return mixed
+     */
+    public function getObjectItems(Item $subject, $type, $withTrashed = false);
+
+    /**
+     * @param Item $subject
+     * @param Permission $permission
+     * @param Item $object
+     * @return bool
+     */
+    public function hasObjectPermission(Item $subject, Permission $permission, Item $object);
+
+    /**
+     * @param Item   $subject
+     * @param string $name
+     * @param Item   $object
+     * @return bool
+     */
+    public function hasObjectPermissionName(Item $subject, $name, Item $object);
+
+    /**
+     * @param Item $subject
+     * @param Permission $permission
+     * @param Item $object
+     * @return void
+     */
+    public function assignObjectPermission(Item $subject, Permission $permission, Item $object);
 
     /**
      * @param Item   $subject
@@ -46,53 +137,23 @@ interface Repository
      *
      * @throws NullPointerException
      */
-    public function assignPermissionByName(Item $subject, $name, Item $object);
+    public function assignObjectPermissionName(Item $subject, $name, Item $object);
 
     /**
-     * @param Item       $subject
+     * @param Item $subject
      * @param Permission $permission
-     * @param Item       $object
-     * @return bool
+     * @param Item $object
+     * @return void
      */
-    public function hasPermission(Item $subject, Permission $permission, Item $object);
+    public function removeObjectPermission(Item $subject, Permission $permission, Item $object);
 
     /**
      * @param Item   $subject
      * @param string $name
      * @param Item   $object
-     * @return bool
+     * @return void
+     *
+     * @throws NullPointerException
      */
-    public function hasPermissionByName(Item $subject, $name, Item $object);
-
-    /**
-     * @param Item       $subject
-     * @param Permission $permission
-     * @param Item       $object
-     * @return mixed
-     */
-    public function getPermissionItem(Item $subject, Permission $permission, Item $object);
-
-    /**
-     * @param Item   $subject
-     * @param string $name
-     * @param Item   $object
-     * @return mixed
-     */
-    public function getPermissionItemByName(Item $subject, $name, Item $object);
-
-    /**
-     * @param Item       $subject
-     * @param Permission $permission
-     * @param Item       $object
-     * @return mixed
-     */
-    public function removePermission(Item $subject, Permission $permission, Item $object);
-
-    /**
-     * @param Item   $subject
-     * @param string $name
-     * @param Item   $object
-     * @return mixed
-     */
-    public function removePermissionByName(Item $subject, $name, Item $object);
+    public function removeObjectPermissionName(Item $subject, $name, Item $object);
 }

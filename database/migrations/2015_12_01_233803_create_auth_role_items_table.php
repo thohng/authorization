@@ -14,36 +14,17 @@ class CreateAuthRoleItemsTable extends Migration
     public function up()
     {
         Schema::create('auth_role_items', function (Blueprint $table) {
+            $table->string('item_type');
+            $table->integer('item_id');
             $table->integer('role_id');
-            $table->string('subject_type');
-            $table->integer('subject_id');
-            $table->string('object_type');
-            $table->integer('object_id');
 
             $table->timestamps();
+
             $table->primary([
-                'role_id',
-                'subject_type',
-                'subject_id',
-                'object_type',
-                'object_id'
-            ], 'role_item');
-            $table->index([
-                'subject_type',
-                'subject_id',
-                'object_type',
-                'object_id'
-            ], 'subject_object');
-            $table->index([
-                'role_id',
-                'subject_type',
-                'subject_id'
-            ], 'role_subject');
-            $table->index([
-                'role_id',
-                'object_type',
-                'object_id'
-            ], 'role_object');
+                'item_type',
+                'item_id',
+                'role_id'
+            ]);
         });
     }
 

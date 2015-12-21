@@ -1,9 +1,9 @@
-<?php namespace TechExim\Auth\Role;
+<?php namespace TechExim\Auth\Permission;
 
 use TechExim\Auth\Model;
 use TechExim\Support\HasMultipleKeys;
 
-class Item extends Model
+class Object extends Model
 {
     use HasMultipleKeys;
 
@@ -13,9 +13,11 @@ class Item extends Model
      * @var array
      */
     protected $primaryKey = [
-        'role_id',
-        'item_type',
-        'item_id'
+        'permission_id',
+        'subject_type',
+        'subject_id',
+        'object_type',
+        'object_id'
     ];
 
     /**
@@ -29,6 +31,6 @@ class Item extends Model
 
     public function getTable()
     {
-        return config('authorization.role.items', 'auth_role_items');
+        return config('authorization.permission.objects', 'auth_permission_objects');
     }
 }

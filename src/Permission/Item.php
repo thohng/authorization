@@ -14,10 +14,8 @@ class Item extends Model
      */
     protected $primaryKey = [
         'permission_id',
-        'subject_type',
-        'subject_id',
-        'object_type',
-        'object_id'
+        'item_type',
+        'item_id'
     ];
 
     /**
@@ -31,6 +29,6 @@ class Item extends Model
 
     public function getTable()
     {
-        return config('authorization.item.permission', 'auth_permission_items');
+        return config('authorization.permission.items', 'auth_permission_items');
     }
 }

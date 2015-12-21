@@ -14,6 +14,8 @@ class Object extends Model
      */
     protected $primaryKey = [
         'role_id',
+        'subject_type',
+        'subject_id',
         'object_type',
         'object_id'
     ];
@@ -29,6 +31,6 @@ class Object extends Model
 
     public function getTable()
     {
-        return config('authorization.role.object', 'auth_role_objects');
+        return config('authorization.role.objects', 'auth_role_objects');
     }
 }

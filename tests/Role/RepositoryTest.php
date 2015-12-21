@@ -1,4 +1,4 @@
-<?php namespace TechExim\Auth\Tests\Role;
+<?php
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use TechExim\Auth\Tests\TestCase;
