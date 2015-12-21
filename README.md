@@ -48,20 +48,20 @@ class MyController extends Controller
 	
 		// Assign role to an object
 		// Object must implement TechExim\Auth\Contracts\Item
-		$roleRepository->assignObjectByName('my_role', $object);
+		$roleRepository->assignItemRoleName($object, 'my_role');
 
 		// Assign role to a subject on an object
 		// Both subject and object must implement TechExim\Auth\Contracts\Item
-		$roleRepository->assignRoleByName($subject, 'my_role', $object);
+		$roleRepository->assignObjectRoleName($subject, 'my_role', $object);
 
 		// Get all assigned roles of an object
-		$roleRepository->getObjectRoles($object);
+		$roleRepository->getItemRoles($object);
 
 		// Check if a subject has a particular role on an object
-		$roleRepository->hasRoleByName($subject, 'my_role', $object);
+		$roleRepository->hasObjectRoleName($subject, 'my_role', $object);
 
 		// Remove subject's role on an object
-		$roleRepository->removeRoleByName($subject, 'my_role', $object);
+		$roleRepository->removeObjectRoleName($subject, 'my_role', $object);
 	}
 }
 ```
@@ -79,10 +79,10 @@ class MyController extends Controller
 
 		// Assign permission to a subject on an object
 		// Both subject and object must implement TechExim\Auth\Contracts\Item
-		$permissionRepository->assignPermissionByName($subject, 'section.action', $object);
+		$permissionRepository->assignObjectPermissionName($subject, 'section.action', $object);
 
 		// Check whether a subject has permission on an object
-		$permissionRepository->hasPermissionByName($subject, 'section.action', $object);
+		$permissionRepository->hasObjectPermissionName($subject, 'section.action', $object);
 	}
 }
 ```
