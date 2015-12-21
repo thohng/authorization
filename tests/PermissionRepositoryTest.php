@@ -5,11 +5,10 @@ use TechExim\Auth\Contracts\Permission\Repository as PermissionRepository;
 use TechExim\Auth\Contracts\Permission;
 use Illuminate\Support\Facades\Event;
 use TechExim\Auth\Events\PermissionWasDeleted;
-use TechExim\Auth\Contracts\Item;
 
 class PermissionRepositoryTest extends TestCase
 {
- //   use DatabaseTransactions;
+    use DatabaseTransactions;
 
     protected $sample = 'user.create';
 
