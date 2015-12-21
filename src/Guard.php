@@ -43,4 +43,9 @@ class Guard implements Contract
 
         return false;
     }
+
+    public function hasPermission(Item $subject, $action)
+    {
+
+    }
 }
