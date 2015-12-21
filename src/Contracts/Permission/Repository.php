@@ -28,7 +28,7 @@ interface Repository
      * @param array $names
      * @return mixed
      */
-    public function getPermissions($names = []);
+    public function getPermissions(array $names = []);
 
     /**
      * @param Item $item

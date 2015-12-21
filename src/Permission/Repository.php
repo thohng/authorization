@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Event;
 use TechExim\Auth\Contracts\Permission\Repository as Contract;
 use TechExim\Auth\Contracts\Item as ItemContract;
 use TechExim\Auth\Contracts\Permission as PermissionContract;
+use TechExim\Auth\Events\PermissionWasDeleted;
+use Illuminate\Database\Eloquent\Model;
 
 class Repository implements Contract
 {
@@ -47,9 +49,9 @@ class Repository implements Contract
         // TODO: Implement delete() method.
         if ($permission instanceof Model) {
             $permission->delete();
-
-            Event::fire(new PermissionWasDeleted($permission));
         }
+
+        Event::fire(new PermissionWasDeleted($permission));
     }
 
     public function getPermission($name)
@@ -91,7 +93,7 @@ class Repository implements Contract
         // TODO: Implement hasItemPermission() method.
         return Item::where('item_type', $item->getType())
             ->where('item_id', $item->getId())
-            ->where('role_id', $permission->getId())
+            ->where('permission_id', $permission->getId())
             ->first() ? true : false;
     }
 
@@ -110,7 +112,7 @@ class Repository implements Contract
             Item::insert([
                 'item_type' => $item->getType(),
                 'item_id'   => $item->getId(),
-                'role_id'   => $permission->getId()
+                'permission_id'   => $permission->getId()
             ]);
         }
     }
@@ -132,7 +134,7 @@ class Repository implements Contract
         if ($this->hasItemPermission($item, $permission)) {
             Item::where('item_type', $item->getType())
                 ->where('item_id', $item->getId())
-                ->where('role_id', $permission->getId())
+                ->where('permission_id', $permission->getId())
                 ->delete();
         }
     }
@@ -155,7 +157,7 @@ class Repository implements Contract
         $ot = $this->getPermissionObjectTable();
 
         return Permission::query()
-            ->join($ot, "$ot.role_id", '=', "rt.id")
+            ->join($ot, "$ot.permission_id", '=', "rt.id")
             ->where("$ot.subject_type", $subject->getType())
             ->where("$ot.subject_id", $subject->getId())
             ->where("$ot.object_type", $object->getType())
@@ -184,7 +186,7 @@ class Repository implements Contract
 
             return $builder->get([
                 "$st.*",
-                "$ot.role_id"
+                "$ot.permission_id"
             ]);
         }
     }
@@ -210,7 +212,7 @@ class Repository implements Contract
 
             return $builder->get([
                 "$st.*",
-                "$ot.role_id"
+                "$ot.permission_id"
             ]);
         }
     }
@@ -222,7 +224,7 @@ class Repository implements Contract
             ->where('subject_id', $subject->getId())
             ->where('object_type', $object->getType())
             ->where('object_id', $object->getId())
-            ->where('role_id', $permission->getId())
+            ->where('permission_id', $permission->getId())
             ->first() ? true : false;
     }
 
@@ -246,7 +248,7 @@ class Repository implements Contract
                 'subject_id'   => $subject->getId(),
                 'object_type'  => $object->getType(),
                 'object_id'    => $object->getId(),
-                'role_id'      => $permission->getId()
+                'permission_id'      => $permission->getId()
             ]);
         }
     }
@@ -265,12 +267,12 @@ class Repository implements Contract
     public function removeObjectPermission(ItemContract $subject, PermissionContract $permission, ItemContract $object)
     {
         // TODO: Implement removeObjectPermission() method.
-        if (!$this->hasObjectPermission($subject, $permission, $object)) {
+        if ($this->hasObjectPermission($subject, $permission, $object)) {
             Object::where('subject_type', $subject->getType())
                 ->where('subject_id', $subject->getId())
                 ->where('object_type', $object->getType())
                 ->where('object_id', $object->getId())
-                ->where('role_id', $permission->getId())
+                ->where('permission_id', $permission->getId())
                 ->delete();
         }
     }

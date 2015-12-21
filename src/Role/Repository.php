@@ -1,13 +1,12 @@
 <?php namespace TechExim\Auth\Role;
 
-use DB;
 use Illuminate\Support\Facades\Event;
 use TechExim\Auth\Contracts\Role\Repository as Contract;
 use TechExim\Auth\Contracts\Item as ItemContract;
 use TechExim\Auth\Contracts\Role as RoleContract;
 use TechExim\Auth\Contracts\Permission as PermissionContract;
 use TechExim\Auth\Events\RoleWasDeleted;
-use TechExim\Auth\Model;
+use Illuminate\Database\Eloquent\Model;
 use TechExim\Exception\NullPointerException;
 
 class Repository implements Contract
@@ -52,9 +51,9 @@ class Repository implements Contract
         // TODO: Implement delete() method.
         if ($role instanceof Model) {
             $role->delete();
-
-            Event::fire(new RoleWasDeleted($role));
         }
+
+        Event::fire(new RoleWasDeleted($role));
     }
 
     public function getRole($name)
@@ -160,7 +159,7 @@ class Repository implements Contract
         $ot = $this->getRoleObjectTable();
 
         return Role::query()
-            ->join($ot, "$ot.role_id", '=', "rt.id")
+            ->join($ot, "$ot.role_id", '=', "$rt.id")
             ->where("$ot.subject_type", $subject->getType())
             ->where("$ot.subject_id", $subject->getId())
             ->where("$ot.object_type", $object->getType())
@@ -270,7 +269,7 @@ class Repository implements Contract
     public function removeObjectRole(ItemContract $subject, RoleContract $role, ItemContract $object)
     {
         // TODO: Implement removeObjectRole() method.
-        if (!$this->hasObjectRole($subject, $role, $object)) {
+        if ($this->hasObjectRole($subject, $role, $object)) {
             Object::where('subject_type', $subject->getType())
                 ->where('subject_id', $subject->getId())
                 ->where('object_type', $object->getType())
